@@ -29,8 +29,6 @@ GREEN='\033[01;32m'
 RED='\033[01;31m'
 DEFAULT='\033[00m'
 
-# Xorg pack
-
 # Install a Desktop
 
 echo "\n${BLUE}Install a Desktop environment...${DEFAULT}\n"
@@ -125,16 +123,18 @@ read -p "Do you want to install TLP for power saving (Notebooks only)? (y/No) " 
 
 echo "\n${BLUE}Install recommended packages...${DEFAULT}\n"
 
-xbps-install -S git curl wget unzip zip nano vim gptfdisk mtools mlocate \
-	ntfs-3g fuse-exfat bash-completion
+xbps-install -S git wget unzip zip nano gptfdisk mtools mlocate \
+	ntfs-3g fuse-exfat bash-completion fuzzypkg fish-shell
 
 echo "\n${GREEN}Done${DEFAULT}\n"
 
 echo "\n${BLUE}Install development packages...${DEFAULT}\n"
 
-xbps-install autoconf automake bison m4 make libtool flex meson ninja
+xbps-install autoconf automake bison m4 libtool flex meson ninja
 
 echo "\n${GREEN}Done${DEFAULT}\n"
+
+# Xorg pack
 
 case $desktop in
     1 ) 
@@ -498,7 +498,7 @@ case $desktop in
 
 	echo "\n${BLUE}Install Openbox...${DEFAULT}\n"
 
-	xbps-install openbox obconf lxappearance lxappearance-obconf jgmenu dunst \
+	xbps-install openbox lxappearance-obconf jgmenu dunst \
 		feh lxterminal lxrandr lxinput pcmanfm gvfs gvfs-mtp gvfs-gphoto2 \
 		mousepad lxtask scrot htop xarchiver emptty	viewnior
 
