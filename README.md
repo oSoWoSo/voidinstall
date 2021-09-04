@@ -7,33 +7,34 @@ void-sh is a program written in Bash that configures Void Linux.
 - Update the system
 - Install recommended packages
 - Install development packages
-- Install a other Shell and make it default (1/14) (optional)
-	- Fish, Zsh
-- Install the X Window System (2/13) (optional)
+- Install a other Shell and make it default (optional)
+    - Fish, Zsh
+- Install the X Window System (optional)
 - Install a Desktop environment (3/13) (optional)
-    - Xfce, MATE, GNOME, KDE Plasma, Budgie, Cinnamon, LXQt, Enlightenment,
+	- Xfce, MATE, GNOME, KDE Plasma, Budgie, Cinnamon, LXQt, Enlightenment,
 	- LXDE, Lumina
-- Install Display Manager (4/13) (optional)
+- Install Display Manager (optional)
     - LightDM, emptty, slim
-- Install a Window manager (5/13) (optional)
-    - i3wm, Openbox, Fluxbox, bspwm, herbstluftwm, IceWM, awesome, jwm, dwm, FVWM3,
+- Install a Window manager (optional)
+	- i3wm, Openbox, Fluxbox, bspwm, herbstluftwm, IceWM, awesome, jwm, dwm, FVWM3,
 	- Wayfire, Sway
-- Install fonts (6/13) (optional)
-- Install an Internet browser (7/13) (optional)
+- Install fonts (optional)
+- Install an Internet browser (optional)
 	- Firefox, Firefox ESR, Chromium, Qutebrowser, Falkon, Badwolf
-- Install LibreOffice (8/13) (optional)
-- Install GIMP + Inkscape (98/13) (optional)
-- Install QEMU + Virt Manager (10/13) (optional)
-- Install a Terminal emulator (11/13) (optional)
-    - Alacritty, Xterm, VXTerminal, Yakuake, Sakura, Kitty
-- Install a Backup program (12/13)
-- Install a Video player (13/13)
-	- mpv, VLC, Parole, Totem
-- Enable required services (14/13)
+- Install LibreOffice (optional)
+- Install GIMP + Inkscape (optional)
+- Install QEMU + Virt Manager (optional)
+- Install a Terminal emulator (optional)
+        - Alacritty, Xterm, VXTerminal, Yakuake, Sakura, Kitty
+- Install a Backup program
+        - Borg, Deja-dup, Timeshift
+- Install a Video player 
+	    - mpv, VLC, Parole, Totem
+- Enable required services 
 - Configure Cron
-- Configure Audio (optional)
+- Configure Audio  (optional)
 - Configure Network Management (optional)
-	- Connman, Network Manager
+	    - Connman, Network Manager
 - Configure Bluetooth (optional)
 - Configure Printing support (optional)
 - Configure TLP for notebook power saving (optional)
