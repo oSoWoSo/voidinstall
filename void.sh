@@ -1146,18 +1146,26 @@ sleep 1
 
 # Configure the Display manager
 
-echo -e "\n${BLUE}Check if a display manager exist. If yes, enable it.${NONE}\n"
+read -p "Check if a display manager exist. If yes, enable it? (y/N) " dmenable
+case $dmenable in
+	y )
 
-if [ -f /usr/bin/lightdm ]; then
-	ln -sv /etc/sv/lightdm /var/service
-elif [ -f /usr/bin/sddm ]; then
-	ln -sv /etc/sv/sddm /var/service
-elif [ -f /usr/bin/gdm ]; then
-	ln -sv /etc/sv/gdm /var/service
-elif [ -f /usr/bin/slim ]; then
-	ln -sv /etc/sv/slim /var/service
-elif [ -f /usr/bin/emptty ]; then
-	ln -sv /etc/sv/emptty /var/service
-fi
+	if [ -f /usr/bin/lightdm ]; then
+		ln -sv /etc/sv/lightdm /var/service
+	elif [ -f /usr/bin/sddm ]; then
+		ln -sv /etc/sv/sddm /var/service
+	elif [ -f /usr/bin/gdm ]; then
+		ln -sv /etc/sv/gdm /var/service
+	elif [ -f /usr/bin/slim ]; then
+		ln -sv /etc/sv/slim /var/service
+	elif [ -f /usr/bin/emptty ]; then
+		ln -sv /etc/sv/emptty /var/service
+	fi
+
+	;;
+
+	n )
+
+	;;
 
 echo -e "\n${BLUE}Finished.${NONE}\n"
