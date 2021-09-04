@@ -34,17 +34,7 @@ RED='\033[01;31m'
 NONE='\033[00m'
 INSTALL='sudo xbps-install'
 
-check () {
-  if [[ $EUID -gt 0 ]]; then
-    echo -e "\n${RED}as ROOT..${NONE}\n"
-    SUDO=sudo
-  else
-    SUDO=''
-  fi
-}
-
 # Update the System
-
 
 echo -e "\n${BLUE}Checking for updates...${NONE}\n"
 
@@ -94,7 +84,7 @@ case $shell in
 	echo -e "\n${BLUE}Install Fish...${NONE}\n"
 	
 	$INSTALL fish-shell
-	check usermod --shell /bin/fish $USER
+	sudo usermod --shell /bin/fish $USER
 	
 	;;
 	
@@ -103,7 +93,7 @@ case $shell in
 	echo -e "\n${BLUE}Install Zsh...${NONE}\n"
 	
 	$INSTALL zsh zsh-autosuggestions zsh-completions zsh-history-substring-search zsh-syntax-highlighting
-	check usermod --shell /bin/zsh $USER
+	sudo usermod --shell /bin/zsh $USER
 	
 	;;
 esac
@@ -122,11 +112,11 @@ case $xwinsys in
 	echo -e "\n${BLUE}Copy configurations...${NONE}\n"
 
 	if [ ! -d /etc/X11/xorg.conf.d ]; then
-		check mkdir -p /etc/X11/xorg.conf.d
+		sudo mkdir -p /etc/X11/xorg.conf.d
 	fi
 
-	check cp -r 00-keyboard.conf /etc/X11/xorg.conf.d/
-	check cp -r 20-libinput.conf /etc/X11/xorg.conf.d/
+	sudo cp -r 00-keyboard.conf /etc/X11/xorg.conf.d/
+	sudo cp -r 20-libinput.conf /etc/X11/xorg.conf.d/
 
 	echo -e "\n${GREEN}Done${NONE}\n"
 
@@ -699,7 +689,7 @@ case $xwinsys in
 		if [ -L /var/service/libvirtd ]; then
 			echo -e "\nService ${GREEN}libvirtd ${NONE}already exist. Continue.\n"
 		else
-			check ln -sv /etc/sv/libvirtd /var/service
+			sudo ln -sv /etc/sv/libvirtd /var/service
 			echo -e "\n${GREEN}Done${NONE}\n"
 		fi
 
@@ -911,7 +901,7 @@ case $xwinsys in
 	if [ -L /var/service/dbus ]; then
 		echo -e "\nService ${GREEN}dbus ${NONE}already exist. Continue.\n"
 	else
-		check ln -s /etc/sv/dbus /var/service
+		sudo ln -s /etc/sv/dbus /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -922,7 +912,7 @@ case $xwinsys in
 	if [ -L /var/service/elogind ]; then
 		echo -e "\nService ${GREEN}elogind ${NONE}already exist. Continue.\n"
 	else
-		check ln -s /etc/sv/elogind /var/service
+		sudo ln -s /etc/sv/elogind /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -931,7 +921,7 @@ case $xwinsys in
 	if [ -L /var/service/polkitd ]; then
 		echo -e "\nService ${GREEN}polkitd ${NONE}already exist. Continue.\n"
 	else
-		check ln -s /etc/sv/polkitd /var/service
+		sudo ln -s /etc/sv/polkitd /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -954,7 +944,7 @@ echo -e "\n${BLUE}Enable cronie service...${NONE}\n"
 if [ -L /var/service/cronie ]; then
 	echo -e "\nService ${GREEN}cronie ${NONE}already exist. Continue.\n"
 else
-	check ln -sv /etc/sv/cronie /var/service
+	sudo ln -sv /etc/sv/cronie /var/service
 	echo -e "\n${GREEN}Done${NONE}\n"
 fi
 
@@ -1017,7 +1007,7 @@ case $netmngt in
 	if [ -L /var/service/NetworkManager ]; then
 		echo -e "\nService ${GREEN}NetworkManager ${NONE}already exist. Continue.\n"
 	else
-		check ln -sv /etc/sv/NetworkManager /var/service
+		sudo ln -sv /etc/sv/NetworkManager /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -1034,7 +1024,7 @@ case $netmngt in
 	if [ -L /var/service/connmand ]; then
 		echo -e "\nService ${GREEN}connmand ${NONE}already exist. Continue.\n"
 	else
-		check ln -sv /etc/sv/connmand /var/service
+		sudo ln -sv /etc/sv/connmand /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -1077,7 +1067,7 @@ case $bluetooth in
 	if [ -L /var/service/bluetoothd ]; then
 		echo -e "\nService ${GREEN}bluetoothd ${NONE}already exist. Continue.\n"
 	else
-		check ln -sv /etc/sv/bluetoothd /var/service
+		sudo ln -sv /etc/sv/bluetoothd /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -1120,7 +1110,7 @@ case $printer in
 	if [ -L /var/service/cupsd ]; then
 		echo -e "\nService ${GREEN}cupsd ${NONE}already exist. Continue.\n"
 	else
-		check ln -sv /etc/sv/cupsd /var/service
+		sudo ln -sv /etc/sv/cupsd /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -1146,7 +1136,7 @@ case $nb_power in
 	if [ -L /var/service/tlp ]; then
 		echo -e "\nService ${GREEN}tlp ${NONE}already exist. Continue.\n"
 	else
-		check ln -sv /etc/sv/tlp /var/service
+		sudo ln -sv /etc/sv/tlp /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -1159,20 +1149,20 @@ esac
 
 # Configure the Display manager
 
-read -p "Check if a display manager exist. If yes, enable it? (y/N) " dmenable
+read -p "sudo if a display manager exist. If yes, enable it? (y/N) " dmenable
 case $dmenable in
 	y )
 
 	if [ -f /usr/bin/lightdm ]; then
-		check ln -sv /etc/sv/lightdm /var/service
+		sudo ln -sv /etc/sv/lightdm /var/service
 	elif [ -f /usr/bin/sddm ]; then
-		check ln -sv /etc/sv/sddm /var/service
+		sudo ln -sv /etc/sv/sddm /var/service
 	elif [ -f /usr/bin/gdm ]; then
-		check ln -sv /etc/sv/gdm /var/service
+		sudo ln -sv /etc/sv/gdm /var/service
 	elif [ -f /usr/bin/slim ]; then
-		check ln -sv /etc/sv/slim /var/service
+		sudo ln -sv /etc/sv/slim /var/service
 	elif [ -f /usr/bin/emptty ]; then
-		check ln -sv /etc/sv/emptty /var/service
+		sudo ln -sv /etc/sv/emptty /var/service
 	fi
 
 	;;
