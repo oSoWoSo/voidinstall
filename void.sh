@@ -28,10 +28,10 @@
 
 # Color definitions
 
-BLUE='\033[01;34m'
-GREEN='\033[01;32m'
-RED='\033[01;31m'
-NONE='\033[00m'
+BLUE="\033[01;34m"
+GREEN="\033[01;32m"
+RED="\033[01;31m"
+NONE="\033[00m"
 
 # Update the System
 
