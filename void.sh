@@ -95,7 +95,7 @@ case $shell in
 	echo -e "\n${BLUE}Install Fish...${NONE}\n"
 	
 	INSTALL fish-shell
-	usermod --shell /bin/fish $USER
+	check usermod --shell /bin/fish $USER
 	
 	;;
 	
@@ -104,7 +104,7 @@ case $shell in
 	echo -e "\n${BLUE}Install Zsh...${NONE}\n"
 	
 	INSTALL zsh zsh-autosuggestions zsh-completions zsh-history-substring-search zsh-syntax-highlighting
-	usermod --shell /bin/zsh $USER
+	check usermod --shell /bin/zsh $USER
 	
 	;;
 esac
@@ -123,11 +123,11 @@ case $xwinsys in
 	echo -e "\n${BLUE}Copy configurations...${NONE}\n"
 
 	if [ ! -d /etc/X11/xorg.conf.d ]; then
-		mkdir -p /etc/X11/xorg.conf.d
+		check mkdir -p /etc/X11/xorg.conf.d
 	fi
 
-	cp -r 00-keyboard.conf /etc/X11/xorg.conf.d/
-	cp -r 20-libinput.conf /etc/X11/xorg.conf.d/
+	check cp -r 00-keyboard.conf /etc/X11/xorg.conf.d/
+	check cp -r 20-libinput.conf /etc/X11/xorg.conf.d/
 
 	echo -e "\n${GREEN}Done${NONE}\n"
 
@@ -700,7 +700,7 @@ case $xwinsys in
 		if [ -L /var/service/libvirtd ]; then
 			echo -e "\nService ${GREEN}libvirtd ${NONE}already exist. Continue.\n"
 		else
-			sudo ln -sv /etc/sv/libvirtd /var/service
+			check ln -sv /etc/sv/libvirtd /var/service
 			echo -e "\n${GREEN}Done${NONE}\n"
 		fi
 
@@ -744,6 +744,7 @@ case $xwinsys in
 		INSTALL xterm
 		export TERMINAL="xterm"
 		echo TERM="xterm" > ~/.bashrc
+
 		echo -e "\n${GREEN}Done${NONE}\n"
 			
 		;;
@@ -755,6 +756,7 @@ case $xwinsys in
 		INSTALL lxterminal
 		export TERMINAL="lxterminal"
 		echo TERM="lxterminal" > ~/.bashrc
+		
 		echo -e "\n${GREEN}Done${NONE}\n"
 			
 		;;
@@ -766,6 +768,7 @@ case $xwinsys in
 		INSTALL yakuake
 		export TERMINAL="yakuake"
 		echo TERM="yakuake" > ~/.bashrc
+		
 		echo -e "\n${GREEN}Done${NONE}\n"
 
 		;;
@@ -777,6 +780,7 @@ case $xwinsys in
 		INSTALL sakura
 		export TERMINAL="sakura"
 		echo TERM="sakura" > ~/.bashrc
+		
 		echo -e "\n${GREEN}Done${NONE}\n"
 
 		;;
@@ -788,6 +792,7 @@ case $xwinsys in
 		INSTALL kitty kitty-terminfo
 		export TERMINAL="kitty"
 		echo TERM="kitty" > ~/.bashrc
+		
 		echo -e "\n${GREEN}Done${NONE}\n"
 
 		;;
@@ -907,7 +912,7 @@ case $xwinsys in
 	if [ -L /var/service/dbus ]; then
 		echo -e "\nService ${GREEN}dbus ${NONE}already exist. Continue.\n"
 	else
-		ln -s /etc/sv/dbus /var/service
+		check ln -s /etc/sv/dbus /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -918,7 +923,7 @@ case $xwinsys in
 	if [ -L /var/service/elogind ]; then
 		echo -e "\nService ${GREEN}elogind ${NONE}already exist. Continue.\n"
 	else
-		ln -s /etc/sv/elogind /var/service
+		check ln -s /etc/sv/elogind /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -927,7 +932,7 @@ case $xwinsys in
 	if [ -L /var/service/polkitd ]; then
 		echo -e "\nService ${GREEN}polkitd ${NONE}already exist. Continue.\n"
 	else
-		ln -s /etc/sv/polkitd /var/service
+		check ln -s /etc/sv/polkitd /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -950,7 +955,7 @@ echo -e "\n${BLUE}Enable cronie service...${NONE}\n"
 if [ -L /var/service/cronie ]; then
 	echo -e "\nService ${GREEN}cronie ${NONE}already exist. Continue.\n"
 else
-	sudo ln -sv /etc/sv/cronie /var/service
+	check ln -sv /etc/sv/cronie /var/service
 	echo -e "\n${GREEN}Done${NONE}\n"
 fi
 
@@ -1013,7 +1018,7 @@ case $netmngt in
 	if [ -L /var/service/NetworkManager ]; then
 		echo -e "\nService ${GREEN}NetworkManager ${NONE}already exist. Continue.\n"
 	else
-		sudo ln -sv /etc/sv/NetworkManager /var/service
+		check ln -sv /etc/sv/NetworkManager /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -1030,7 +1035,7 @@ case $netmngt in
 	if [ -L /var/service/connmand ]; then
 		echo -e "\nService ${GREEN}connmand ${NONE}already exist. Continue.\n"
 	else
-		sudo ln -sv /etc/sv/connmand /var/service
+		check ln -sv /etc/sv/connmand /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -1073,7 +1078,7 @@ case $bluetooth in
 	if [ -L /var/service/bluetoothd ]; then
 		echo -e "\nService ${GREEN}bluetoothd ${NONE}already exist. Continue.\n"
 	else
-		sudo ln -sv /etc/sv/bluetoothd /var/service
+		check ln -sv /etc/sv/bluetoothd /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -1116,7 +1121,7 @@ case $printer in
 	if [ -L /var/service/cupsd ]; then
 		echo -e "\nService ${GREEN}cupsd ${NONE}already exist. Continue.\n"
 	else
-		sudo ln -sv /etc/sv/cupsd /var/service
+		check ln -sv /etc/sv/cupsd /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -1142,7 +1147,7 @@ case $nb_power in
 	if [ -L /var/service/tlp ]; then
 		echo -e "\nService ${GREEN}tlp ${NONE}already exist. Continue.\n"
 	else
-		sudo ln -sv /etc/sv/tlp /var/service
+		check ln -sv /etc/sv/tlp /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -1160,15 +1165,15 @@ case $dmenable in
 	y )
 
 	if [ -f /usr/bin/lightdm ]; then
-		sudo ln -sv /etc/sv/lightdm /var/service
+		check ln -sv /etc/sv/lightdm /var/service
 	elif [ -f /usr/bin/sddm ]; then
-		sudo ln -sv /etc/sv/sddm /var/service
+		check ln -sv /etc/sv/sddm /var/service
 	elif [ -f /usr/bin/gdm ]; then
-		sudo ln -sv /etc/sv/gdm /var/service
+		check ln -sv /etc/sv/gdm /var/service
 	elif [ -f /usr/bin/slim ]; then
-		sudo ln -sv /etc/sv/slim /var/service
+		check ln -sv /etc/sv/slim /var/service
 	elif [ -f /usr/bin/emptty ]; then
-		sudo ln -sv /etc/sv/emptty /var/service
+		check ln -sv /etc/sv/emptty /var/service
 	fi
 
 	;;
