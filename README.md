@@ -25,11 +25,11 @@ void-sh is a program written in Bash that configures Void Linux.
 - Install GIMP + Inkscape (optional)
 - Install QEMU + Virt Manager (optional)
 - Install a Terminal emulator (optional)
-        - Alacritty, Xterm, VXTerminal, Yakuake, Sakura, Kitty
+	- Alacritty, Xterm, VXTerminal, Yakuake, Sakura, Kitty
 - Install a Backup program (optional)
-        - Borg, Deja-dup, Timeshift
+	- Borg, Deja-dup, Timeshift
 - Install a Video player (optional)
-	    - mpv, VLC, Parole, Totem
+	- mpv, VLC, Parole, Totem
 - Enable required services 
 - Configure Cron
 - Configure PulseAudio (optional)
