@@ -34,7 +34,7 @@ void-sh is a program written in Bash that configures Void Linux.
 - Configure Cron
 - Configure PulseAudio (optional)
 - Configure Network Management (optional)
-	    - Connman, Network Manager
+	- Connman, Network Manager
 - Configure Bluetooth (optional)
 - Configure Printing support (optional)
 - Configure TLP for notebook power saving (optional)
