@@ -60,8 +60,6 @@ xbps-install curl wget unzip zip nano vim gptfdisk mtools mlocate \
 
 echo -e "\n${GREEN}Done${NONE}\n"
 
-sleep 1
-
 # Install development packages
 
 read -p "Do you want to install development tools? (y/N) " devtools
@@ -81,8 +79,6 @@ case $devtools in
 
 	;;
 esac
-
-sleep 1
 
 # Install the X Window System
 
@@ -105,8 +101,6 @@ case $xwinsys in
 	cp -r 20-libinput.conf /etc/X11/xorg.conf.d/
 
 	echo -e "\n${GREEN}Done${NONE}\n"
-
-	sleep 1
 
 	# Install a Desktop environment
 
@@ -313,8 +307,6 @@ case $xwinsys in
 		;;
 	esac
 
-	sleep 1
-
 	# Install display manager
 	
 	echo -e "\n${BLUE}Install a display manageer...${NONE}\n"
@@ -360,8 +352,6 @@ case $xwinsys in
 			
 		;;
 	esac
-
-	sleep 1
 
 	# Install a Window manager
 	
@@ -526,8 +516,6 @@ case $xwinsys in
 		;;
 	esac
 
-	sleep 1
-
 	# Install fonts
 
 	read -p "Do you want to install some fonts? (y/N) " fonts
@@ -547,8 +535,6 @@ case $xwinsys in
 			
 		;;
 	esac
-
-	sleep 1
 
 	# Install an Internet browser
 
@@ -618,8 +604,6 @@ case $xwinsys in
 		;;
 	esac
 
-	sleep 1
-
 	# Install LibreOffice
 
 	read -p "Do you want to install LibreOffice? (y/N) " libreoffice
@@ -641,8 +625,6 @@ case $xwinsys in
 		;;
 	esac
 
-	sleep 1
-
 	# Install GIMP + Inkscape
 
 	read -p "Do you want to install GIMP and Inkscape? (y/N) " gimpinkscape
@@ -661,8 +643,6 @@ case $xwinsys in
 
 		;;
 	esac
-
-	sleep 1
 
 	# Install QEMU + Virt Manager
 
@@ -689,8 +669,6 @@ case $xwinsys in
 
 		;;
 	esac
-
-	sleep 1
 
 	# Install a Terminal emulator
 
@@ -760,8 +738,6 @@ case $xwinsys in
 		;;
 	esac
 
-	sleep 1
-
 	# Install a Backup program
 
 	echo -e "\n${BLUE}Install a Backup program...${NONE}\n"
@@ -809,8 +785,6 @@ case $xwinsys in
 
 			;;
 	esac
-
-	sleep 1
 
 	# Install a Video player
 
@@ -871,8 +845,6 @@ case $xwinsys in
 			;;
 	esac
 
-	sleep 1
-
 	# Enable required services
 
 	echo -e "\n${BLUE}Enable required services...${NONE}\n"
@@ -915,8 +887,6 @@ case $xwinsys in
 	;;
 esac
 
-sleep 1
-
 # Configure Cron
 
 echo -e "\n${BLUE}Configure Cron...${NONE}\n"
@@ -932,8 +902,6 @@ else
 	ln -sv /etc/sv/cronie /var/service
 	echo -e "\n${GREEN}Done${NONE}\n"
 fi
-
-sleep 1
 
 # Configure Audio
 
@@ -954,8 +922,6 @@ case $pulseaudio in
 
 	;;
 esac
-
-sleep 1
 
 # Configure Network Management
 
@@ -1024,8 +990,6 @@ case $netmngt in
 	;;
 esac
 
-sleep 1
-
 # Configure Bluetooth
 
 read -p "Do you want to use Bluetooth? (y/N) " bluetooth
@@ -1068,8 +1032,6 @@ case $bluetooth in
 
 	;;
 esac
-
-sleep 1
 
 # Configure Printing support
 
@@ -1114,8 +1076,6 @@ case $printer in
 	;;
 esac
 
-sleep 1
-
 # Configure Notebook Power Saving
 
 read -p "Do you want to install TLP for power saving (Notebooks only)? (y/N) " nb_power
@@ -1141,8 +1101,6 @@ case $nb_power in
 
 	;;
 esac
-
-sleep 1
 
 # Configure the Display manager
 
