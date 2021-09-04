@@ -6,7 +6,7 @@ void-sh is a program written in Bash that configures Void Linux.
 
 - Update the system
 - Install recommended packages
-- Install development packages
+- Install development packages (optional)
 - Install a other Shell and make it default (optional)
     - Fish, Zsh
 - Install the X Window System (optional)
@@ -26,13 +26,13 @@ void-sh is a program written in Bash that configures Void Linux.
 - Install QEMU + Virt Manager (optional)
 - Install a Terminal emulator (optional)
         - Alacritty, Xterm, VXTerminal, Yakuake, Sakura, Kitty
-- Install a Backup program
+- Install a Backup program (optional)
         - Borg, Deja-dup, Timeshift
-- Install a Video player 
+- Install a Video player (optional)
 	    - mpv, VLC, Parole, Totem
 - Enable required services 
 - Configure Cron
-- Configure Audio  (optional)
+- Configure PulseAudio (optional)
 - Configure Network Management (optional)
 	    - Connman, Network Manager
 - Configure Bluetooth (optional)
