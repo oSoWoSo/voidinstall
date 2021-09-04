@@ -1167,5 +1167,6 @@ case $dmenable in
 	n )
 
 	;;
+esac
 
 echo -e "\n${BLUE}Finished.${NONE}\n"
