@@ -32,12 +32,11 @@ BLUE='\033[01;34m'
 GREEN='\033[01;32m'
 RED='\033[01;31m'
 NONE='\033[00m'
-INST='sudo xbps-install'
-INSTALL=='check | ${INST}'
+INSTALL='sudo xbps-install'
 
 check () {
   if [[ $EUID -gt 0 ]]; then
-    echo -e "\n${RED}This operation needs super-user privileges.${NONE}\n"
+    echo -e "\n${RED}as ROOT..${NONE}\n"
     SUDO=sudo
   else
     SUDO=''
@@ -49,7 +48,7 @@ check () {
 
 echo -e "\n${BLUE}Checking for updates...${NONE}\n"
 
-INSTALL -Su
+$INSTALL -Su
 
 echo -e "\n${GREEN}Done${NONE}\n"
 
@@ -57,7 +56,7 @@ echo -e "\n${GREEN}Done${NONE}\n"
 
 echo -e "${BLUE}Install recommended packages...${NONE}\n"
 
-INSTALL curl wget unzip zip nano vim gptfdisk mtools mlocate \
+$INSTALL curl wget unzip zip nano vim gptfdisk mtools mlocate \
 	ntfs-3g fuse-exfat bash-completion linux-headers
 
 echo -e "\n${GREEN}Done${NONE}\n"
@@ -68,7 +67,7 @@ read -p "Do you want to install development tools? (y/N) " devtools
 case $devtools in
 	y )
 
-	INSTALL autoconf automake bison m4 make libtool flex meson ninja \
+	$INSTALL autoconf automake bison m4 make libtool flex meson ninja \
 			optipng sassc
 
 	echo -e "\n${GREEN}Done${NONE}\n"
@@ -94,7 +93,7 @@ case $shell in
 	
 	echo -e "\n${BLUE}Install Fish...${NONE}\n"
 	
-	INSTALL fish-shell
+	$INSTALL fish-shell
 	check usermod --shell /bin/fish $USER
 	
 	;;
@@ -103,7 +102,7 @@ case $shell in
 	
 	echo -e "\n${BLUE}Install Zsh...${NONE}\n"
 	
-	INSTALL zsh zsh-autosuggestions zsh-completions zsh-history-substring-search zsh-syntax-highlighting
+	$INSTALL zsh zsh-autosuggestions zsh-completions zsh-history-substring-search zsh-syntax-highlighting
 	check usermod --shell /bin/zsh $USER
 	
 	;;
