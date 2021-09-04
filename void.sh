@@ -75,8 +75,35 @@ case $devtools in
 
 	n )
 
-	continue
+	;;
+esac
 
+# Install shell
+
+echo -e "\n${BLUE}Install shell...${NONE}\n"
+echo -e "Possible (type in number): \n
+- 1 Fish
+- 2 Zsh
+- 0 None\n"
+
+read -p "Which shell do you want?" shell
+case $shell in
+	1 )
+	
+	echo -e "\n${BLUE}Install Fish...${NONE}\n"
+	
+	xbps-install fish-shell
+	usermod --shell /bin/fish $USER
+	
+	;;
+	
+	2 )
+	
+	echo -e "\n${BLUE}Install Zsh...${NONE}\n"
+	
+	xbps-install zsh zsh-autosuggestions zsh-completions zsh-history-substring-search zsh-syntax-highlighting
+	usermod --shell /bin/zsh $USER
+	
 	;;
 esac
 
@@ -311,16 +338,16 @@ case $xwinsys in
 	
 	echo -e "\n${BLUE}Install a display manageer...${NONE}\n"
 	echo -e "Possible (type in number): \n
-	- 1 LightDM
-	- 2 emptty
-	- 3 slim
+	- 1 Lightdm
+	- 2 Emptty
+	- 3 Slim
 	- 0 none\n"
 	
 	read -p "Which display manager do you want? " displaymanager
 	case $displaymanager in
 		1 )
 		
-		echo -e "\n${BLUE}Install LightDM...${NONE}\n"		
+		echo -e "\n${BLUE}Install Lightdm...${NONE}\n"		
 		
 		xbps-install lightdm lightdm-gtk3-greeter lightdm-gtk-greeter-settings
 		
@@ -330,7 +357,7 @@ case $xwinsys in
 		
 		2 )
 
-		echo -e "\n${BLUE}Install emptty...${NONE}\n"		
+		echo -e "\n${BLUE}Install Emptty...${NONE}\n"		
 
 		xbps-install emptty
 
@@ -340,7 +367,7 @@ case $xwinsys in
 
 		3 )
 
-		echo -e "\n${BLUE}Install slim...${NONE}\n"		
+		echo -e "\n${BLUE}Install Slim...${NONE}\n"		
 
 		xbps-install slim
 
@@ -545,6 +572,7 @@ case $xwinsys in
 	- 3 Chromium
 	- 4 qutebrowser
 	- 5 Falkon
+	- 6 Badwolf
 	- 0 None\n"
 
 	read -p "Which browser do you want? " browser
@@ -602,6 +630,17 @@ case $xwinsys in
 		0 ) 
 			
 		;;
+		
+		6 )
+		
+		echo -e "\n${BLUE}Install Badwolf...${NONE}\n"
+
+		xbps-install badwolf
+
+		echo -e "\n${GREEN}Done${NONE}\n"
+
+		;;
+		
 	esac
 
 	# Install LibreOffice
@@ -679,6 +718,7 @@ case $xwinsys in
 	- 3 LXTerminal
 	- 4 Yakuake
 	- 5 Sakura
+	- 6 Kitty
 	- 0 I take the given one\n"
 
 	read -p "What terminal emulator do you want? " terminal
@@ -688,7 +728,9 @@ case $xwinsys in
 		echo -e "\n${BLUE}Install Alacritty...${NONE}\n"
 
 		xbps-install alacritty alacritty-terminfo
-
+		export TERMINAL="alacritty"
+		echo TERM="alacritty" > /home/$USER/.bashrc
+	
 		echo -e "\n${GREEN}Done${NONE}\n"
 			
 		;;
@@ -698,7 +740,8 @@ case $xwinsys in
 		echo -e "\n${BLUE}Install xterm...${NONE}\n"
 
 		xbps-install xterm
-
+		export TERMINAL="xterm"
+		echo TERM="xterm" > /home/$USER/.bashrc
 		echo -e "\n${GREEN}Done${NONE}\n"
 			
 		;;
@@ -708,7 +751,8 @@ case $xwinsys in
 		echo -e "\n${BLUE}Install LXTerminal...${NONE}\n"
 
 		xbps-install lxterminal
-
+		export TERMINAL="lxterminal"
+		echo TERM="lxterminal" > /home/$USER/.bashrc
 		echo -e "\n${GREEN}Done${NONE}\n"
 			
 		;;
@@ -718,7 +762,8 @@ case $xwinsys in
 		echo -e "\n${BLUE}Install Yakuake...${NONE}\n"
 
 		xbps-install yakuake
-
+		export TERMINAL="yakuake"
+		echo TERM="yakuake" > /home/$USER/.bashrc
 		echo -e "\n${GREEN}Done${NONE}\n"
 
 		;;
@@ -728,12 +773,20 @@ case $xwinsys in
 		echo -e "\n${BLUE}Install Sakura...${NONE}\n"
 
 		xbps-install sakura
-
+		export TERMINAL="sakura"
+		echo TERM="sakura" > /home/$USER/.bashrc
 		echo -e "\n${GREEN}Done${NONE}\n"
 
 		;;
 
 		0 )
+		
+		echo -e "\n${BLUE}Install Kitty...${NONE}\n"
+
+		xbps-install kitty kitty-terminfo
+		export TERMINAL="kitty"
+		echo TERM="kitty" > /home/$USER/.bashrc
+		echo -e "\n${GREEN}Done${NONE}\n"
 
 		;;
 	esac
@@ -780,8 +833,6 @@ case $xwinsys in
 			;;
 
 			0 )
-
-			continue
 
 			;;
 	esac
@@ -839,8 +890,6 @@ case $xwinsys in
 			;;
 
 			0 )
-
-			continue
 
 			;;
 	esac
