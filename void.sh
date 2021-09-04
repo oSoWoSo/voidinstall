@@ -32,22 +32,23 @@ BLUE='\033[01;34m'
 GREEN='\033[01;32m'
 RED='\033[01;31m'
 NONE='\033[00m'
+INST='sudo xbps-install'
 
-# check if we have UID 0, exit otherwise
-rootcheck() {
-	if [ "$(id -u)" != 0 ]; then
-		echo -e "${RED}Please run as root.${NONE}"
-		exit 255
-	fi
+check () {
+  if [[ $EUID -gt 0 ]]; then
+    echo -e "\n${RED}This operation needs super-user privileges.${NONE}\n"
+    SUDO=sudo
+  else
+    SUDO=''
+  fi
 }
 
 # Update the System
 
-rootcheck
 
 echo -e "\n${BLUE}Checking for updates...${NONE}\n"
 
-xbps-install -Su
+check | ${INST} -Su
 
 echo -e "\n${GREEN}Done${NONE}\n"
 
@@ -55,7 +56,7 @@ echo -e "\n${GREEN}Done${NONE}\n"
 
 echo -e "${BLUE}Install recommended packages...${NONE}\n"
 
-xbps-install curl wget unzip zip nano vim gptfdisk mtools mlocate \
+check | ${INST} curl wget unzip zip nano vim gptfdisk mtools mlocate \
 	ntfs-3g fuse-exfat bash-completion linux-headers
 
 echo -e "\n${GREEN}Done${NONE}\n"
@@ -66,7 +67,7 @@ read -p "Do you want to install development tools? (y/N) " devtools
 case $devtools in
 	y )
 
-	xbps-install autoconf automake bison m4 make libtool flex meson ninja \
+	check | ${INST} autoconf automake bison m4 make libtool flex meson ninja \
 			optipng sassc
 
 	echo -e "\n${GREEN}Done${NONE}\n"
@@ -92,7 +93,7 @@ case $shell in
 	
 	echo -e "\n${BLUE}Install Fish...${NONE}\n"
 	
-	xbps-install fish-shell
+	check | ${INST} fish-shell
 	usermod --shell /bin/fish $USER
 	
 	;;
@@ -101,7 +102,7 @@ case $shell in
 	
 	echo -e "\n${BLUE}Install Zsh...${NONE}\n"
 	
-	xbps-install zsh zsh-autosuggestions zsh-completions zsh-history-substring-search zsh-syntax-highlighting
+	check | ${INST} zsh zsh-autosuggestions zsh-completions zsh-history-substring-search zsh-syntax-highlighting
 	usermod --shell /bin/zsh $USER
 	
 	;;
@@ -115,7 +116,7 @@ case $xwinsys in
 
 	echo -e "\n${BLUE}Install the X Window System...${NONE}\n"
 
-	xbps-install xorg-server xorg-server-xwayland xorg-video-drivers xorg-input-drivers \
+	check | ${INST} xorg-server xorg-server-xwayland xorg-video-drivers xorg-input-drivers \
 		xinit xauth xrandr xrdb xwininfo xdpyinfo xsetroot neofetch
 
 	echo -e "\n${BLUE}Copy configurations...${NONE}\n"
@@ -151,7 +152,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install Xfce...${NONE}\n"
 
-		xbps-install xfce4-appfinder xfce4-battery-plugin xfce4-clipman-plugin xfce4-cpufreq-plugin \
+		check | ${INST} xfce4-appfinder xfce4-battery-plugin xfce4-clipman-plugin xfce4-cpufreq-plugin \
 			xfce4-cpugraph-plugin xfce4-dict xfce4-diskperf-plugin xfce4-fsguard-plugin \
 			xfce4-genmon-plugin xfce4-mailwatch-plugin xfce4-mpc-plugin xfce4-netload-plugin \
 			xfce4-notifyd xfce4-panel xfce4-panel-appmenu xfce4-places-plugin xfce4-power-manager \
@@ -170,7 +171,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install MATE...${NONE}\n"
 
-		xbps-install mate-applets mate-backgrounds mate-calc mate-control-center mate-desktop \
+		check | ${INST} mate-applets mate-backgrounds mate-calc mate-control-center mate-desktop \
 			mate-icon-theme mate-indicator-applet mate-media mate-menus mate-notification-daemon \
 			mate-panel mate-panel-appmenu mate-screensaver mate-sensors-applet mate-session-manager \
 			mate-settings-daemon mate-system-monitor mate-terminal mate-themes mate-tweak mate-utils \
@@ -185,7 +186,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install GNOME...${NONE}\n"
 
-		xbps-install gnome-shell gnome-control-center gnome-tweaks gnome-system-monitor gnome-terminal gdm \
+		check | ${INST} gnome-shell gnome-control-center gnome-tweaks gnome-system-monitor gnome-terminal gdm \
 			gnome-disk-utility nautilus nautilus-sendto gvfs gvfs-mtp gvfs-gphoto2 eog eog-plugins \
 			evince gedit gedit-plugins gnome-video-effects gnome-themes-extra gnome-session gnome-screenshot \
 			gnome-shell-extensions gnome-icon-theme gnome-icon-theme-extras gnome-icon-theme-symbolic \
@@ -201,7 +202,7 @@ case $xwinsys in
 
 			echo -e "\n${BLUE}Install GNOME applications...${NONE}\n"
 
-			xbps-install gnome-calendar gnome-clocks gnome-weather evolution gnome-font-viewer \
+			check | ${INST} gnome-calendar gnome-clocks gnome-weather evolution gnome-font-viewer \
 				gnome-calculator gnome-characters gnome-contacts gnome-documents gnome-maps
 
 			;;
@@ -219,7 +220,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install KDE Plasma...${NONE}\n"
 
-		xbps-install plasma-desktop plasma-disks plasma-thunderbolt plasma-systemmonitor plasma-pa plasma-nm \
+		check | ${INST} plasma-desktop plasma-disks plasma-thunderbolt plasma-systemmonitor plasma-pa plasma-nm \
 			plasma-firewall plasma-browser-integration plasma-vault latte-dock oxygen kdegraphics-thumbnailers \
 			dolphin dolphin-plugins kate5 konsole okular gwenview ark sddm sddm-kcm yakuake spectacle \
 			partitionmanager ffmpegthumbs kde-gtk-config5
@@ -233,7 +234,7 @@ case $xwinsys in
 
 			echo -e "\n${BLUE}Install KDE applications...${NONE}\n"
 
-			xbps-install kmail kontact korganizer kaddressbook akregator konversation kcalc kcharselect
+			check | ${INST} kmail kontact korganizer kaddressbook akregator konversation kcalc kcharselect
 
 			;;
 
@@ -248,7 +249,7 @@ case $xwinsys in
 
 			echo -e "\n${BLUE}Install KDE Connect...${NONE}\n"
 
-			xbps-install kdeconnect
+			check | ${INST} kdeconnect
 
 			;;
 
@@ -265,7 +266,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install Budgie...${NONE}\n"
 
-		xbps-install budgie-desktop gnome-control-center gnome-system-monitor gnome-terminal nautilus \
+		check | ${INST} budgie-desktop gnome-control-center gnome-system-monitor gnome-terminal nautilus \
 			nautilus-sendto gnome-keyring evince gedit gedit-plugins eog eog-plugins gnome-screenshot \ 
 			gnome-disk-utility gvfs gvfs-mtp gvfs-gphoto2 file-roller
 
@@ -277,7 +278,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install Cinnamon...${NONE}\n"
 
-		xbps-install cinnamon gnome-system-monitor gnome-terminal gnome-screenshot gnome-disk-utility \
+		check | ${INST} cinnamon gnome-system-monitor gnome-terminal gnome-screenshot gnome-disk-utility \
 			gnome-keyring gedit gedit-plugins evince gvfs gvfs-mtp gvfs-gphoto2 eog eog-plugins file-roller
 		
 		echo -e "\n${GREEN}Done${NONE}\n"
@@ -288,7 +289,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install LXQt...${NONE}\n"
 
-		xbps-install lxqt-about lxqt-admin lxqt-archiver lxqt-build-tools lxqt-config lxqt-globalkeys lxqt-notificationd \
+		check | ${INST} lxqt-about lxqt-admin lxqt-archiver lxqt-build-tools lxqt-config lxqt-globalkeys lxqt-notificationd \
 			lxqt-openssh-askpass lxqt-panel lxqt-policykit lxqt-powermanagement lxqt-qtplugin lxqt-runner lxqt-session \
 			lxqt-sudo lxqt-themes obconf-qt openbox pcmanfm-qt lximage-qt FeatherPad qlipper qterminal
 
@@ -300,7 +301,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install Enlightenment...${NONE}\n"
 
-		xbps-install enlightenment terminology mousepad gvfs gvfs-mtp gvfs-gphoto2 zathura zathura-pdf-poppler \
+		check | ${INST} enlightenment terminology mousepad gvfs gvfs-mtp gvfs-gphoto2 zathura zathura-pdf-poppler \
 			Thunar thunar-volman thunar-archive-plugin thunar-media-tags-plugin xarchiver
 
 		echo -e "\n${GREEN}Done${NONE}\n"
@@ -311,7 +312,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install LXDE...${NONE}\n"
 
-		xbps-install lxde-common lxde-icon-theme lxappearance lxinput lxpanel lxrandr lxsession lxtask \
+		check | ${INST} lxde-common lxde-icon-theme lxappearance lxinput lxpanel lxrandr lxsession lxtask \
 			lxterminal pcmanfm gvfs gvfs-mtp gvfs-gphoto2 viewnior mousepad zathura zathura-pdf-poppler \ 
 			openbox obconf lxappearance-obconf xarchiver
 
@@ -323,7 +324,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install Lumina...${NONE}\n"
 
-		xbps-install lumina lumina-pdf lumina-calculator gvfs gvfs-mtp gvfs-gphoto2 mousepad lxterminal viewnior
+		check | ${INST} lumina lumina-pdf lumina-calculator gvfs gvfs-mtp gvfs-gphoto2 mousepad lxterminal viewnior
 
 		echo -e "\n${GREEN}Done${NONE}\n"
 
@@ -349,7 +350,7 @@ case $xwinsys in
 		
 		echo -e "\n${BLUE}Install Lightdm...${NONE}\n"		
 		
-		xbps-install lightdm lightdm-gtk3-greeter lightdm-gtk-greeter-settings
+		check | ${INST} lightdm lightdm-gtk3-greeter lightdm-gtk-greeter-settings
 		
 		echo -e "\n${GREEN}Done${NONE}\n"
 			
@@ -359,7 +360,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install Emptty...${NONE}\n"		
 
-		xbps-install emptty
+		check | ${INST} emptty
 
 		echo -e "\n${GREEN}Done${NONE}\n"
 					
@@ -369,7 +370,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install Slim...${NONE}\n"		
 
-		xbps-install slim
+		check | ${INST} slim
 
 		echo -e "\n${GREEN}Done${NONE}\n"
 					
@@ -406,7 +407,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install i3-gaps...${NONE}\n"
 
-		xbps-install i3-gaps i3lock i3status i3blocks dunst dmenu feh Thunar \
+		check | ${INST} i3-gaps i3lock i3status i3blocks dunst dmenu feh Thunar \
 			thunar-volman thunar-archive-plugin thunar-media-tags-plugin xarchiver \
 			lm_sensors acpi playerctl scrot htop xfce4-terminal arandr gvfs gvfs-mtp \
 			gvfs-gphoto2 mousepad xfce4-taskmanager viewnior
@@ -419,7 +420,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install Openbox...${NONE}\n"
 
-		xbps-install openbox obconf lxappearance lxappearance-obconf jgmenu dunst \
+		check | ${INST} openbox obconf lxappearance lxappearance-obconf jgmenu dunst \
 			feh lxterminal lxrandr lxinput pcmanfm gvfs gvfs-mtp gvfs-gphoto2 \
 			mousepad lxtask scrot htop xarchiver viewnior
 
@@ -431,7 +432,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install Fluxbox...${NONE}\n"
 
-		xbps-install fluxbox dunst feh xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
+		check | ${INST} fluxbox dunst feh xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad xfce4-terminal scrot htop xarchiver \
 		        viewnior
 
@@ -443,7 +444,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install Bspwm...${NONE}\n"
 
-		xbps-install bspwm sxhkd dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
+		check | ${INST} bspwm sxhkd dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
 		echo -e "\n${GREEN}Done${NONE}\n"
@@ -454,7 +455,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install herbstluftwm...${NONE}\n"
 
-		xbps-install herbstluftwm dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
+		check | ${INST} herbstluftwm dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
 		echo -e "\n${GREEN}Done${NONE}\n"
@@ -465,7 +466,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install IceWM...${NONE}\n"
 
-		xbps-install icewm dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
+		check | ${INST} icewm dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
 		echo -e "\n${GREEN}Done${NONE}\n"
@@ -476,7 +477,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install awesome...${NONE}\n"
 
-		xbps-install awesome vicious dunst feh arandr xfce4-terminal Thunar thunar-volman \
+		check | ${INST} awesome vicious dunst feh arandr xfce4-terminal Thunar thunar-volman \
 				thunar-archive-plugin thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot \
 				htop xarchiver viewnior
 
@@ -488,7 +489,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install jwm...${NONE}\n"
 
-		xbps-install jwm dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
+		check | ${INST} jwm dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
 		echo -e "\n${GREEN}Done${NONE}\n"
@@ -499,7 +500,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install dwm...${NONE}\n"
 
-		xbps-install dwm dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
+		check | ${INST} dwm dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
 		echo -e "\n${GREEN}Done${NONE}\n"
@@ -510,7 +511,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install FVWM3...${NONE}\n"
 
-		xbps-install fvwm3 feh xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
+		check | ${INST} fvwm3 feh xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
 		echo -e "\n${GREEN}Done${NONE}\n"
@@ -521,7 +522,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install Sway...${NONE}\n"
 
-		xbps-install sway swaybg swayidle swaylock azote grimshot Waybar gvfs gvfs-mtp gvfs-gphoto2 \
+		check | ${INST} sway swaybg swayidle swaylock azote grimshot Waybar gvfs gvfs-mtp gvfs-gphoto2 \
 				htop wofi
 
 		echo -e "\n${GREEN}Done${NONE}\n"
@@ -532,7 +533,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install Wayfire...${NONE}\n"
 
-		xbps-install wayfire grim gvfs gvfs-mtp gvfs-gphoto2 htop wofi
+		check | ${INST} wayfire grim gvfs gvfs-mtp gvfs-gphoto2 htop wofi
 
 		echo -e "\n${GREEN}Done${NONE}\n"
 
@@ -551,7 +552,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install fonts...${NONE}\n"
 
-		xbps-install liberation-fonts-ttf dejavu-fonts-ttf \
+		check | ${INST} liberation-fonts-ttf dejavu-fonts-ttf \
 			ttf-ubuntu-font-family fonts-roboto-ttf
 
 		echo -e "\n${GREEN}Done${NONE}\n"
@@ -581,7 +582,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install Firefox...${NONE}\n"
 
-		xbps-install firefox firefox-i18n-en-US firefox-i18n-de
+		check | ${INST} firefox firefox-i18n-en-US firefox-i18n-de
 
 		echo -e "\n${GREEN}Done${NONE}\n"
 			
@@ -591,7 +592,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install Firefox Extended Support Release...${NONE}\n"
 
-		xbps-install firefox-esr firefox-esr-i18n-en-US firefox-esr-i18n-de
+		check | ${INST} firefox-esr firefox-esr-i18n-en-US firefox-esr-i18n-de
 
 		echo -e "\n${GREEN}Done${NONE}\n"
 			
@@ -601,7 +602,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install Chromium...${NONE}\n"
 
-		xbps-install chromium
+		check | ${INST} chromium
 
 		echo -e "\n${GREEN}Done${NONE}\n"
 			
@@ -611,7 +612,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install qutebrowser...${NONE}\n"
 
-		xbps-install qutebrowser
+		check | ${INST} qutebrowser
 
 		echo -e "\n${GREEN}Done${NONE}\n"
 
@@ -621,7 +622,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install Falkon...${NONE}\n"
 
-		xbps-install falkon
+		check | ${INST} falkon
 
 		echo -e "\n${GREEN}Done${NONE}\n"
 
@@ -635,7 +636,7 @@ case $xwinsys in
 		
 		echo -e "\n${BLUE}Install Badwolf...${NONE}\n"
 
-		xbps-install badwolf
+		check | ${INST} badwolf
 
 		echo -e "\n${GREEN}Done${NONE}\n"
 
@@ -651,7 +652,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install LibreOffice...${NONE}\n"
 
-		xbps-install libreoffice-writer libreoffice-calc libreoffice-impress \
+		check | ${INST} libreoffice-writer libreoffice-calc libreoffice-impress \
 			libreoffice-draw libreoffice-math libreoffice-base libreoffice-gnome \
 			libreoffice-i18n-en-US libreoffice-i18n-de
 
@@ -672,7 +673,7 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install GIMP and Inkscape...${NONE}\n"
 
-		xbps-install inkscape gimp
+		check | ${INST} inkscape gimp
 
 		echo -e "\n${GREEN}Done${NONE}\n"
 
@@ -691,14 +692,14 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install QEMU and Virt Manager...${NONE}\n"
 
-		xbps-install qemu virt-manager libvirt
+		check | ${INST} qemu virt-manager libvirt
 
 		echo -e "\n${BLUE}Enable libvirtd service...${NONE}\n"
 
 		if [ -L /var/service/libvirtd ]; then
 			echo -e "\nService ${GREEN}libvirtd ${NONE}already exist. Continue.\n"
 		else
-			ln -sv /etc/sv/libvirtd /var/service
+			sudo ln -sv /etc/sv/libvirtd /var/service
 			echo -e "\n${GREEN}Done${NONE}\n"
 		fi
 
@@ -727,9 +728,9 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install Alacritty...${NONE}\n"
 
-		xbps-install alacritty alacritty-terminfo
+		check | ${INST} alacritty alacritty-terminfo
 		export TERMINAL="alacritty"
-		echo TERM="alacritty" > /home/$USER/.bashrc
+		echo TERM="alacritty" > ~/.bashrc
 	
 		echo -e "\n${GREEN}Done${NONE}\n"
 			
@@ -739,9 +740,9 @@ case $xwinsys in
 
 		echo -e "\n${BLUE}Install xterm...${NONE}\n"
 
-		xbps-install xterm
+		check | ${INST} xterm
 		export TERMINAL="xterm"
-		echo TERM="xterm" > /home/$USER/.bashrc
+		echo TERM="xterm" > ~/.bashrc
 		echo -e "\n${GREEN}Done${NONE}\n"
 			
 		;;
@@ -750,9 +751,9 @@ case $xwinsys in
 		
 		echo -e "\n${BLUE}Install LXTerminal...${NONE}\n"
 
-		xbps-install lxterminal
+		check | ${INST} lxterminal
 		export TERMINAL="lxterminal"
-		echo TERM="lxterminal" > /home/$USER/.bashrc
+		echo TERM="lxterminal" > ~/.bashrc
 		echo -e "\n${GREEN}Done${NONE}\n"
 			
 		;;
@@ -761,9 +762,9 @@ case $xwinsys in
 		
 		echo -e "\n${BLUE}Install Yakuake...${NONE}\n"
 
-		xbps-install yakuake
+		check | ${INST} yakuake
 		export TERMINAL="yakuake"
-		echo TERM="yakuake" > /home/$USER/.bashrc
+		echo TERM="yakuake" > ~/.bashrc
 		echo -e "\n${GREEN}Done${NONE}\n"
 
 		;;
@@ -772,9 +773,9 @@ case $xwinsys in
 		
 		echo -e "\n${BLUE}Install Sakura...${NONE}\n"
 
-		xbps-install sakura
+		check | ${INST} sakura
 		export TERMINAL="sakura"
-		echo TERM="sakura" > /home/$USER/.bashrc
+		echo TERM="sakura" > ~/.bashrc
 		echo -e "\n${GREEN}Done${NONE}\n"
 
 		;;
@@ -783,9 +784,9 @@ case $xwinsys in
 		
 		echo -e "\n${BLUE}Install Kitty...${NONE}\n"
 
-		xbps-install kitty kitty-terminfo
+		check | ${INST} kitty kitty-terminfo
 		export TERMINAL="kitty"
-		echo TERM="kitty" > /home/$USER/.bashrc
+		echo TERM="kitty" > ~/.bashrc
 		echo -e "\n${GREEN}Done${NONE}\n"
 
 		;;
@@ -806,7 +807,7 @@ case $xwinsys in
 
 			echo -e "\n${BLUE}Install Borg...${NONE}\n"
 
-			xbps-install borg
+			check | ${INST} borg
 
 			echo -e "\n${GREEN}Done${NONE}\n"
 
@@ -816,7 +817,7 @@ case $xwinsys in
 			
 			echo -e "\n${BLUE}Install Timeshift...${NONE}\n"
 
-			xbps-install timeshift
+			check | ${INST} timeshift
 
 			echo -e "\n${GREEN}Done${NONE}\n"
 
@@ -826,7 +827,7 @@ case $xwinsys in
 			
 			echo -e "\n${BLUE}Install Deja-dup...${NONE}\n"
 
-			xbps-install deja-dup
+			check | ${INST} deja-dup
 
 			echo -e "\n${GREEN}Done${NONE}\n"
 
@@ -853,7 +854,7 @@ case $xwinsys in
 			
 			echo -e "\n${BLUE}Install mpv...${NONE}\n"
 
-			xbps-install mpv
+			check | ${INST} mpv
 
 			echo -e "\n${GREEN}Done${NONE}\n"
 
@@ -863,7 +864,7 @@ case $xwinsys in
 			
 			echo -e "\n${BLUE}Install VLC Media Player...${NONE}\n"
 
-			xbps-install vlc
+			check | ${INST} vlc
 
 			echo -e "\n${GREEN}Done${NONE}\n"
 
@@ -873,7 +874,7 @@ case $xwinsys in
 			
 			echo -e "\n${BLUE}Install Parole...${NONE}\n"
 
-			xbps-install parole
+			check | ${INST} parole
 
 			echo -e "\n${GREEN}Done${NONE}\n"
 
@@ -883,7 +884,7 @@ case $xwinsys in
 			
 			echo -e "\n${BLUE}Install Totem...${NONE}\n"
 
-			xbps-install totem
+			check | ${INST} totem
 
 			echo -e "\n${GREEN}Done${NONE}\n"
 
@@ -900,7 +901,7 @@ case $xwinsys in
 
 	echo -e "\n${BLUE}Enable D-Bus...${NONE}\n"
 
-	xbps-install -y dbus
+	check | ${INST} -y dbus
 
 	if [ -L /var/service/dbus ]; then
 		echo -e "\nService ${GREEN}dbus ${NONE}already exist. Continue.\n"
@@ -911,7 +912,7 @@ case $xwinsys in
 
 	echo -e "\n${BLUE}Enable elogind...${NONE}\n"
 
-	xbps-install -y elogind
+	check | ${INST} -y elogind
 
 	if [ -L /var/service/elogind ]; then
 		echo -e "\nService ${GREEN}elogind ${NONE}already exist. Continue.\n"
@@ -941,14 +942,14 @@ esac
 echo -e "\n${BLUE}Configure Cron...${NONE}\n"
 echo -e "\nInstall cronie...\n"
 
-xbps-install -y cronie
+check | ${INST} -y cronie
 
 echo -e "\n${BLUE}Enable cronie service...${NONE}\n"
 
 if [ -L /var/service/cronie ]; then
 	echo -e "\nService ${GREEN}cronie ${NONE}already exist. Continue.\n"
 else
-	ln -sv /etc/sv/cronie /var/service
+	sudo ln -sv /etc/sv/cronie /var/service
 	echo -e "\n${GREEN}Done${NONE}\n"
 fi
 
@@ -960,7 +961,7 @@ case $pulseaudio in
 
 	echo -e "\n${BLUE}Install PulseAudio...${NONE}\n"
 
-	xbps-install pulseaudio pulseaudio-utils pulsemixer alsa-plugins-pulseaudio \
+	check | ${INST} pulseaudio pulseaudio-utils pulsemixer alsa-plugins-pulseaudio \
 		pavucontrol
 
 	echo -e "\n${GREEN}Done${NONE}\n"
@@ -986,7 +987,7 @@ case $netmngt in
 
 	echo -e "\n${BLUE}Install Network Manager...${NONE}\n"
 
-	xbps-install NetworkManager NetworkManager-openvpn NetworkManager-openconnect \
+	check | ${INST} NetworkManager NetworkManager-openvpn NetworkManager-openconnect \
 			NetworkManager-vpnc NetworkManager-l2tp
 	
 	echo -e "\n"
@@ -997,7 +998,7 @@ case $netmngt in
 
 			echo -e "\n${BLUE}Install Network Manager applet...${NONE}\n"
 
-			xbps-install network-manager-applet
+			check | ${INST} network-manager-applet
 					
 			;;
 
@@ -1011,7 +1012,7 @@ case $netmngt in
 	if [ -L /var/service/NetworkManager ]; then
 		echo -e "\nService ${GREEN}NetworkManager ${NONE}already exist. Continue.\n"
 	else
-		ln -sv /etc/sv/NetworkManager /var/service
+		sudo ln -sv /etc/sv/NetworkManager /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -1021,14 +1022,14 @@ case $netmngt in
 
 	echo -e "\n${BLUE}Install Connman...${NONE}\n"
 
-	xbps-install connman connman-ncurses
+	check | ${INST} connman connman-ncurses
 
 	echo -e "\n${BLUE}Enable Connman service...${NONE}\n"
 
 	if [ -L /var/service/connmand ]; then
 		echo -e "\nService ${GREEN}connmand ${NONE}already exist. Continue.\n"
 	else
-		ln -sv /etc/sv/connmand /var/service
+		sudo ln -sv /etc/sv/connmand /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -1047,7 +1048,7 @@ case $bluetooth in
 
 	echo -e "\n${BLUE}Install BlueZ...${NONE}\n"
 
-	xbps-install bluez
+	check | ${INST} bluez
 
 	echo -e "\n"
 
@@ -1057,7 +1058,7 @@ case $bluetooth in
 
 			echo -e "\n${BLUE}Install Blueman...${NONE}\n"
 
-			xbps-install blueman
+			check | ${INST} blueman
 
 			;;
 
@@ -1071,7 +1072,7 @@ case $bluetooth in
 	if [ -L /var/service/bluetoothd ]; then
 		echo -e "\nService ${GREEN}bluetoothd ${NONE}already exist. Continue.\n"
 	else
-		ln -sv /etc/sv/bluetoothd /var/service
+		sudo ln -sv /etc/sv/bluetoothd /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -1090,7 +1091,7 @@ case $printer in
 
 	echo -e "\n${BLUE}Install CUPS and Tools...${NONE}\n"
 
-	xbps-install cups cups-pk-helper cups-filters foomatic-db foomatic-db-engine
+	check | ${INST} cups cups-pk-helper cups-filters foomatic-db foomatic-db-engine
 
 	echo -e "\n"
 
@@ -1100,7 +1101,7 @@ case $printer in
 
 			echo -e "\n${BLUE}Install system-config-printer...${NONE}\n"
 
-			xbps-install system-config-printer
+			check | ${INST} system-config-printer
 
 			;;
 
@@ -1114,7 +1115,7 @@ case $printer in
 	if [ -L /var/service/cupsd ]; then
 		echo -e "\nService ${GREEN}cupsd ${NONE}already exist. Continue.\n"
 	else
-		ln -sv /etc/sv/cupsd /var/service
+		sudo ln -sv /etc/sv/cupsd /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -1133,14 +1134,14 @@ case $nb_power in
 
 	echo -e "\n${BLUE}Install TLP and PowerTop...${NONE}\n"
 
-	xbps-install tlp tlp-rdw powertop
+	check | ${INST} tlp tlp-rdw powertop
 
 	echo -e "\n${BLUE}Enable TLP service...${NONE}\n"
 
 	if [ -L /var/service/tlp ]; then
 		echo -e "\nService ${GREEN}tlp ${NONE}already exist. Continue.\n"
 	else
-		ln -sv /etc/sv/tlp /var/service
+		sudo ln -sv /etc/sv/tlp /var/service
 		echo -e "\n${GREEN}Done${NONE}\n"
 	fi
 
@@ -1158,15 +1159,15 @@ case $dmenable in
 	y )
 
 	if [ -f /usr/bin/lightdm ]; then
-		ln -sv /etc/sv/lightdm /var/service
+		sudo ln -sv /etc/sv/lightdm /var/service
 	elif [ -f /usr/bin/sddm ]; then
-		ln -sv /etc/sv/sddm /var/service
+		sudo ln -sv /etc/sv/sddm /var/service
 	elif [ -f /usr/bin/gdm ]; then
-		ln -sv /etc/sv/gdm /var/service
+		sudo ln -sv /etc/sv/gdm /var/service
 	elif [ -f /usr/bin/slim ]; then
-		ln -sv /etc/sv/slim /var/service
+		sudo ln -sv /etc/sv/slim /var/service
 	elif [ -f /usr/bin/emptty ]; then
-		ln -sv /etc/sv/emptty /var/service
+		sudo ln -sv /etc/sv/emptty /var/service
 	fi
 
 	;;
