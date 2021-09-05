@@ -33,25 +33,33 @@ green=$(tput setaf 2)
 red=$(tput setaf 1)
 none=$(tput sgr0)
 
+echo -n "$red"
+echo "Let's begin installing..."
+echo -n "$none"
+
 # Update the System
 
 echo -n "$blue"
 echo "Checking for updates..."
+echo -n "$none"
 
 sudo xbps-install -Su
 echo -n "$green"
 echo "Done"
+echo -n "$none"
 
 # Install recommended packages
 
 echo -n "$blue"
 echo "Install recommended packages..."
+echo -n "$none"
 
 sudo xbps-install curl wget unzip zip nano vim gptfdisk mtools mlocate \
 	ntfs-3g fuse-exfat bash-completion linux-headers
 
 echo -n "$green"
 echo "Done"
+echo -n "$none"
 
 # Install development packages
 
@@ -62,8 +70,9 @@ case $devtools in
 	sudo xbps-install autoconf automake bison m4 make libtool flex meson ninja \
 			optipng sassc
 
-		echo -n "$green"
+	echo -n "$green"
 	echo "Done"
+	echo -n "$none"
 
 	;;
 
@@ -76,6 +85,8 @@ esac
 
 echo -n "$blue"
 echo "Install shell..."
+echo -n "$none"
+
 printf "Possible (type in number): \n
 - 1 Fish
 - 2 Zsh
@@ -87,7 +98,8 @@ case $shell in
 	
 	echo -n "$blue"
 	echo "Install Fish..."
-	
+	echo -n "$none"
+
 	sudo xbps-install fish-shell
 	sudo usermod --shell /bin/fish "$USER"
 	
@@ -97,7 +109,8 @@ case $shell in
 	
 	echo -n "$blue"
 	echo "Install Zsh..."
-	
+	echo -n "$none"
+
 	sudo xbps-install zsh zsh-autosuggestions zsh-completions zsh-history-substring-search zsh-syntax-highlighting
 	sudo usermod --shell /bin/zsh "$USER"
 	
@@ -111,11 +124,13 @@ case $xwinsys in
 	y )
 	echo -n "$blue"
 	echo "Install the X Window System..."
+	echo -n "$none"
 
 	sudo xbps-install xorg-server xorg-server-xwayland xorg-video-drivers xorg-input-drivers \
 		xinit xauth xrandr xrdb xwininfo xdpyinfo xsetroot neofetch
 	echo -n "$blue"
 	echo "Copy configurations..."
+	echo -n "$none"
 
 	if [ ! -d /etc/X11/xorg.conf.d ]; then
 		sudo mkdir -p /etc/X11/xorg.conf.d
@@ -124,12 +139,16 @@ case $xwinsys in
 	sudo cp -r 00-keyboard.conf /etc/X11/xorg.conf.d/
 	sudo cp -r 20-libinput.conf /etc/X11/xorg.conf.d/
 
-		echo -n "$green"
+	echo -n "$green"
 	echo "Done"
+	echo -n "$none"
 
 	# Install a Desktop environment
+	
 	echo -n "$blue"
 	echo "Install a Desktop environment..."
+	echo -n "$none"
+
 	printf "Possible (type in number): \n
 	- 1 Xfce
 	- 2 MATE
@@ -148,6 +167,7 @@ case $xwinsys in
 		1 ) 
 		echo -n "$blue"
 		echo "Install Xfce..."
+		echo -n "$none"
 
 		sudo xbps-install xfce4-appfinder xfce4-battery-plugin xfce4-clipman-plugin xfce4-cpufreq-plugin \
 			xfce4-cpugraph-plugin xfce4-dict xfce4-diskperf-plugin xfce4-fsguard-plugin \
@@ -162,12 +182,13 @@ case $xwinsys in
 
 		echo -n "$green"
 		echo "Done"
-			
+		echo -n "$none"
 		;;
 		
 		2 ) 
 		echo -n "$blue"
 		echo "Install MATE..."
+		echo -n "$none"
 
 		sudo xbps-install mate-applets mate-backgrounds mate-calc mate-control-center mate-desktop \
 			mate-icon-theme mate-indicator-applet mate-media mate-menus mate-notification-daemon \
@@ -178,12 +199,13 @@ case $xwinsys in
 		
 		echo -n "$green"
 		echo "Done"
-			
+		echo -n "$none"	
 		;;
 		
 		3 )
 		echo -n "$blue"
 		echo "Install GNOME..."
+		echo -n "$none"
 
 		sudo xbps-install gnome-shell gnome-control-center gnome-tweaks gnome-system-monitor gnome-terminal gdm \
 			gnome-disk-utility nautilus nautilus-sendto gvfs gvfs-mtp gvfs-gphoto2 eog eog-plugins \
@@ -193,10 +215,9 @@ case $xwinsys in
 		
 		echo -n "$blue"
 		echo "GNOME Applications"
-		echo -n "$blue"
 		echo "Includes: GNOME Calendar, GNOME Clocks, GNOME Weather, Evolution, GNOME Font Viewer,"
-		echo -n "$blue"
 		echo "GNOME Calculator, GNOME Characters, GNOME Contacts, GNOME Documents, GNOME Maps"
+		echo -n "$none"
 
 		read -p "Do you want to install GNOME applications? (y/N) " gnomeapps
 		case $gnomeapps in
@@ -204,7 +225,7 @@ case $xwinsys in
 
 			echo -n "$blue"
 			echo "Install GNOME applications..."
-
+			echo -n "$none"
 			sudo xbps-install gnome-calendar gnome-clocks gnome-weather evolution gnome-font-viewer \
 				gnome-calculator gnome-characters gnome-contacts gnome-documents gnome-maps
 
@@ -217,12 +238,13 @@ case $xwinsys in
 		
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 		
 		4 )
 		echo -n "$blue"
 		echo "Install KDE Plasma..."
+		echo -n "$none"
 
 		sudo xbps-install plasma-desktop plasma-disks plasma-thunderbolt plasma-systemmonitor plasma-pa plasma-nm \
 			plasma-firewall plasma-browser-integration plasma-vault latte-dock oxygen kdegraphics-thumbnailers \
@@ -230,8 +252,8 @@ case $xwinsys in
 			partitionmanager ffmpegthumbs kde-gtk-config5
 		echo -n "$blue"
 		echo "KDE Applications"
-		echo -n "$blue"
 		echo "Includes: KMail, Kontact, KOrganizer, KAddressbook, Akregator, Konversation, KCalc, KCharSelect"
+		echo -n "$none"
 
 		read -p "Do you want to install KDE applications? (y/N) " kdeapps
 		case $kdeapps in
@@ -239,6 +261,7 @@ case $xwinsys in
 
 			echo -n "$blue"
 			echo "Install KDE applications..."
+			echo -n "$none"
 
 			sudo xbps-install kmail kontact korganizer kaddressbook akregator konversation kcalc kcharselect
 
@@ -255,6 +278,7 @@ case $xwinsys in
 
 			echo -n "$blue"
 			echo "Install KDE Connect..."
+			echo -n "$none"
 
 			sudo xbps-install kdeconnect
 
@@ -267,81 +291,81 @@ case $xwinsys in
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		5 )
 		echo -n "$blue"
 		echo "Install Budgie..."
-
+		echo -n "$none"
 		sudo xbps-install budgie-desktop gnome-control-center gnome-system-monitor gnome-terminal nautilus \
 			nautilus-sendto gnome-keyring evince gedit gedit-plugins eog eog-plugins gnome-screenshot \
 			gnome-disk-utility gvfs gvfs-mtp gvfs-gphoto2 file-roller
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		6 )
 		echo -n "$blue"
 		echo "Install Cinnamon..."
-
+		echo -n "$none"
 		sudo xbps-install cinnamon gnome-system-monitor gnome-terminal gnome-screenshot gnome-disk-utility \
 			gnome-keyring gedit gedit-plugins evince gvfs gvfs-mtp gvfs-gphoto2 eog eog-plugins file-roller
 		
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		7 )
 		echo -n "$blue"
 		echo "Install LXQt..."
-
+		echo -n "$none"
 		sudo xbps-install lxqt-about lxqt-admin lxqt-archiver lxqt-build-tools lxqt-config lxqt-globalkeys lxqt-notificationd \
 			lxqt-openssh-askpass lxqt-panel lxqt-policykit lxqt-powermanagement lxqt-qtplugin lxqt-runner lxqt-session \
 			lxqt-sudo lxqt-themes obconf-qt openbox pcmanfm-qt lximage-qt FeatherPad qlipper qterminal
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		8 )
 		echo -n "$blue"
 		echo "Install Enlightenment..."
-
+		echo -n "$none"
 		sudo xbps-install enlightenment terminology mousepad gvfs gvfs-mtp gvfs-gphoto2 zathura zathura-pdf-poppler \
 			Thunar thunar-volman thunar-archive-plugin thunar-media-tags-plugin xarchiver
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		9 )
 		echo -n "$blue"
 		echo "Install LXDE..."
-
+		echo -n "$none"
 		sudo xbps-install lxde-common lxde-icon-theme lxappearance lxinput lxpanel lxrandr lxsession lxtask \
 			lxterminal pcmanfm gvfs gvfs-mtp gvfs-gphoto2 viewnior mousepad zathura zathura-pdf-poppler \
 			openbox obconf lxappearance-obconf xarchiver
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		10 )
 		echo -n "$blue"
 		echo "Install Lumina..."
-
+		echo -n "$none"
 		sudo xbps-install lumina lumina-pdf lumina-calculator gvfs gvfs-mtp gvfs-gphoto2 mousepad lxterminal viewnior
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 		
 		0 ) 
@@ -353,6 +377,7 @@ case $xwinsys in
 	
 	echo -n "$blue"
 	echo "Install a display manageer..."
+	echo -n "$none"
 	printf "Possible (type in number): \n
 	- 1 Lightdm
 	- 2 Emptty
@@ -364,34 +389,34 @@ case $xwinsys in
 		1 )
 		echo -n "$blue"
 		echo "Install Lightdm..."		
-		
+		echo -n "$none"		
 		sudo xbps-install lightdm lightdm-gtk3-greeter lightdm-gtk-greeter-settings
 		
 		echo -n "$green"
 		echo "Done"
-			
+		echo -n "$none"			
 		;;
 		
 		2 )
 		echo -n "$blue"
 		echo "Install Emptty..."		
-
+		echo -n "$none"
 		sudo xbps-install emptty
 
 		echo -n "$green"
 		echo "Done"
-					
+		echo -n "$none"					
 		;;
 
 		3 )
 		echo -n "$blue"
 		echo "Install Slim..."		
-
+		echo -n "$none"
 		sudo xbps-install slim
 
 		echo -n "$green"
 		echo "Done"
-					
+		echo -n "$none"					
 		;;
 		
 		0 ) 
@@ -402,6 +427,7 @@ case $xwinsys in
 	# Install a Window manager
 	echo -n "$blue"
 	echo "Install a Window Manager..."
+	echo -n "$none"
 	printf "Possible (type in number): \n
 	--- Xorg ---
 	- 1 i3-gaps
@@ -424,7 +450,7 @@ case $xwinsys in
 		1 ) 
 		echo -n "$blue"
 		echo "Install i3-gaps..."
-
+		echo -n "$none"
 		sudo xbps-install i3-gaps i3lock i3status i3blocks dunst dmenu feh Thunar \
 			thunar-volman thunar-archive-plugin thunar-media-tags-plugin xarchiver \
 			lm_sensors acpi playerctl scrot htop xfce4-terminal arandr gvfs gvfs-mtp \
@@ -432,141 +458,141 @@ case $xwinsys in
 
 		echo -n "$green"
 		echo "Done"
-			
+		echo -n "$none"			
 		;;
 
 		2 )
 		echo -n "$blue"
 		echo "Install Openbox..."
-
+		echo -n "$none"
 		sudo xbps-install openbox obconf lxappearance lxappearance-obconf jgmenu dunst \
 			feh lxterminal lxrandr lxinput pcmanfm gvfs gvfs-mtp gvfs-gphoto2 \
 			mousepad lxtask scrot htop xarchiver viewnior
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 		
 		3 )
 		echo -n "$blue"
 		echo "Install Fluxbox..."
-
+		echo -n "$none"
 		sudo xbps-install fluxbox dunst feh xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad xfce4-terminal scrot htop xarchiver \
 		        viewnior
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		4 )
 		echo -n "$blue"
 		echo "Install Bspwm..."
-
+		echo -n "$none"
 		sudo xbps-install bspwm sxhkd dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		5 )
 		echo -n "$blue"
 		echo "Install herbstluftwm..."
-
+		echo -n "$none"
 		sudo xbps-install herbstluftwm dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		6 )
 		echo -n "$blue"
 		echo "Install IceWM..."
-
+		echo -n "$none"
 		sudo xbps-install icewm dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		7 )
 		echo -n "$blue"
 		echo "Install awesome..."
-
+		echo -n "$none"
 		sudo xbps-install awesome vicious dunst feh arandr xfce4-terminal Thunar thunar-volman \
 				thunar-archive-plugin thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot \
 				htop xarchiver viewnior
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		8 )
 		echo -n "$blue"
 		echo "Install jwm..."
-
+		echo -n "$none"
 		sudo xbps-install jwm dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		9 )
 		echo -n "$blue"
 		echo "Install dwm..."
-
+		echo -n "$none"
 		sudo xbps-install dwm dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		10 )
 		echo -n "$blue"
 		echo "Install FVWM3..."
-
+		echo -n "$none"
 		sudo xbps-install fvwm3 feh xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 		
 		11 )
 		echo -n "$blue"
 		echo "Install Sway..."
-
+		echo -n "$none"
 		sudo xbps-install sway swaybg swayidle swaylock azote grimshot Waybar gvfs gvfs-mtp gvfs-gphoto2 \
 				htop wofi
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		12 )
 		echo -n "$blue"
 		echo "Install Wayfire..."
-
+		echo -n "$none"
 		sudo xbps-install wayfire grim gvfs gvfs-mtp gvfs-gphoto2 htop wofi
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		0 ) 
@@ -581,13 +607,13 @@ case $xwinsys in
 		y ) 
 		echo -n "$blue"
 		echo "Install fonts..."
-
+		echo -n "$none"
 		sudo xbps-install liberation-fonts-ttf dejavu-fonts-ttf \
 			ttf-ubuntu-font-family fonts-roboto-ttf
 
 		echo -n "$green"
 		echo "Done"
-			
+		echo -n "$none"			
 		;;
 		
 		n ) 
@@ -598,6 +624,7 @@ case $xwinsys in
 	# Install an Internet browser
 	echo -n "$blue"
 	echo "Install an Internet browser..."
+	echo -n "$none"
 	printf "Possible (type in number): \n
 	- 1 Firefox
 	- 2 Firefox-ESR
@@ -612,56 +639,56 @@ case $xwinsys in
 		1 )
 		echo -n "$blue"
 		echo "Install Firefox..."
-
+		echo -n "$none"
 		sudo xbps-install firefox firefox-i18n-en-US firefox-i18n-de
 
 		echo -n "$green"
 		echo "Done"
-			
+		echo -n "$none"			
 		;;
 
 		2 ) 
 		echo -n "$blue"
 		echo "Install Firefox Extended Support Release..."
-
+		echo -n "$none"
 		sudo xbps-install firefox-esr firefox-esr-i18n-en-US firefox-esr-i18n-de
 
 		echo -n "$green"
 		echo "Done"
-			
+		echo -n "$none"			
 		;;
 
 		3 ) 
 		echo -n "$blue"
 		echo "Install Chromium..."
-
+		echo -n "$none"
 		sudo xbps-install chromium
 
 		echo -n "$green"
 		echo "Done"
-			
+		echo -n "$none"			
 		;;
 
 		4 )
 		echo -n "$blue"
 		echo "Install qutebrowser..."
-
+		echo -n "$none"
 		sudo xbps-install qutebrowser
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		5 )
 		echo -n "$blue"
 		echo "Install Falkon..."
-
+		echo -n "$none"
 		sudo xbps-install falkon
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 		
 		0 ) 
@@ -671,12 +698,12 @@ case $xwinsys in
 		6 )
 		echo -n "$blue"
 		echo "Install Badwolf..."
-
+		echo -n "$none"
 		sudo xbps-install badwolf
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 		
 	esac
@@ -688,14 +715,14 @@ case $xwinsys in
 		y )
 		echo -n "$blue"
 		echo "Install LibreOffice..."
-
+		echo -n "$none"
 		sudo xbps-install libreoffice-writer libreoffice-calc libreoffice-impress \
 			libreoffice-draw libreoffice-math libreoffice-base libreoffice-gnome \
 			libreoffice-i18n-en-US libreoffice-i18n-de
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		n )
@@ -710,12 +737,12 @@ case $xwinsys in
 		y )
 		echo -n "$blue"
 		echo "Install GIMP and Inkscape..."
-
+		echo -n "$none"
 		sudo xbps-install inkscape gimp
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		n )
@@ -730,18 +757,19 @@ case $xwinsys in
 		y )
 		echo -n "$blue"
 		echo "Install QEMU and Virt Manager..."
-
+		echo -n "$none"
 		sudo xbps-install qemu virt-manager libvirt
 		echo -n "$blue"
 		echo "Enable libvirtd service..."
-
+		echo -n "$none"
 		if [ -L /var/service/libvirtd ]; then
 			echo -n "$green"
 			echo "Service libvirtd already exist. Continue."
+			echo -n "$none"
 		else
 			sudo ln -sv /etc/sv/libvirtd /var/service
-		echo -n "$green"
-		echo "Done"
+			echo -n "$green"
+			echo "Done"
 		fi
 
 		;;
@@ -754,6 +782,7 @@ case $xwinsys in
 	# Install a Terminal emulator
 	echo -n "$blue"
 	echo "Install a Terminal emulator..."
+	echo -n "$none"
 	printf "Possible (type in number): \n
 	- 1 Alacritty
 	- 2 xterm
@@ -768,85 +797,86 @@ case $xwinsys in
 		1 ) 
 		echo -n "$blue"
 		echo "Install Alacritty..."
-
+		echo -n "$none"
 		sudo xbps-install alacritty alacritty-terminfo
 		export TERMINAL="alacritty"
 		printf TERM="alacritty" > ~/.bashrc
 	
 		echo -n "$green"
 		echo "Done"
-			
+		echo -n "$none"			
 		;;
 		
 		2 ) 
 		echo -n "$blue"
 		echo "Install xterm..."
-
+		echo -n "$none"
 		sudo xbps-install xterm
 		export TERMINAL="xterm"
 		printf TERM="xterm" > ~/.bashrc
 
 		echo -n "$green"
 		echo "Done"
-			
+		echo -n "$none"			
 		;;
 		
 		3 ) 
 		echo -n "$blue"
 		echo "Install LXTerminal..."
-
+		echo -n "$none"
 		sudo xbps-install lxterminal
 		export TERMINAL="lxterminal"
 		printf TERM="lxterminal" > ~/.bashrc
 		
 		echo -n "$green"
 		echo "Done"
-			
+		echo -n "$none"			
 		;;
 
 		4 )
 		echo -n "$blue"
 		echo "Install Yakuake..."
-
+		echo -n "$none"
 		sudo xbps-install yakuake
 		export TERMINAL="yakuake"
 		printf TERM="yakuake" > ~/.bashrc
 		
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		5 )
 		echo -n "$blue"
 		echo "Install Sakura..."
-
+		echo -n "$none"
 		sudo xbps-install sakura
 		export TERMINAL="sakura"
 		printf TERM="sakura" > ~/.bashrc
 		
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 
 		0 )
-				echo -n "$blue"
+		echo -n "$blue"
 		echo "Install Kitty..."
-
+		echo -n "$none"
 		sudo xbps-install kitty kitty-terminfo
 		export TERMINAL="kitty"
 		printf TERM="kitty" > ~/.bashrc
 		
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 		;;
 	esac
 
 	# Install a Backup program
 	echo -n "$blue"
 	echo "Install a Backup program..."
+	echo -n "$none"
 	printf "Possible (type in number): \n
 	- 1 Borg
 	- 2 Timeshift
@@ -858,37 +888,37 @@ case $xwinsys in
 			1 )
 
 			echo -n "$blue"
-                        echo "Install Borg..."
-
+        	echo "Install Borg..."
+			echo -n "$none"
 			sudo xbps-install borg
 
 			echo -n "$green"
 			echo "Done"
-
+			echo -n "$none"
 			;;
 
 			2 )
 			
 			echo -n "$blue"
-                        echo "Install Timeshift..."
-
+            echo "Install Timeshift..."
+			echo -n "$none"
 			sudo xbps-install timeshift
 
 			echo -n "$green"
 			echo "Done"
-
+			echo -n "$none"
 			;;
 
 			3 )
 			
 			echo -n "$blue"
-                        echo "Install Deja-dup..."
-
+            echo "Install Deja-dup..."
+			echo -n "$none"
 			sudo xbps-install deja-dup
 
 			echo -n "$green"
 			echo "Done"
-
+			echo -n "$none"
 			;;
 
 			0 )
@@ -899,6 +929,7 @@ case $xwinsys in
 	# Install a Video player
 	echo -n "$blue"
 	echo "Install a Video player..."
+	echo -n "$none"
 	printf "Possible (type in number): \n
 	- 1 mpv
 	- 2 VLC Media Player
@@ -911,49 +942,49 @@ case $xwinsys in
 			1 )
 			
 			echo -n "$blue"
-                        echo "Install mpv..."
-
+            echo "Install mpv..."
+			echo -n "$none"
 			sudo xbps-install mpv
 
 			echo -n "$green"
 			echo "Done"
-
+			echo -n "$none"
 			;;
 
 			2 )
 			
 			echo -n "$blue"
-                        echo "Install VLC Media Player..."
-
+            echo "Install VLC Media Player..."
+			echo -n "$none"
 			sudo xbps-install vlc
 
 			echo -n "$green"
 			echo "Done"
-
+			echo -n "$none"
 			;;
 
 			3 )
 			
 			echo -n "$blue"
-                        echo "Install Parole..."
-
+            echo "Install Parole..."
+			echo -n "$none"
 			sudo xbps-install parole
 
 			echo -n "$green"
 			echo "Done"
-
+			echo -n "$none"
 			;;
 
 			4 )
 			
 			echo -n "$blue"
-                        echo "Install Totem..."
-
+            echo "Install Totem..."
+			echo -n "$none"
 			sudo xbps-install totem
 
 			echo -n "$green"
 			echo "Done"
-
+			echo -n "$none"
 			;;
 
 			0 )
@@ -973,34 +1004,40 @@ case $xwinsys in
 	if [ -L /var/service/dbus ]; then
 		echo -n "$green"
 		echo "Service dbus already exist. Continue."
+		echo -n "$none"
 	else
 		sudo ln -s /etc/sv/dbus /var/service
 		echo -n "$green"
 		echo "Done"
+		echo -n "$none"
 	fi
 		echo -n "$blue"
 		echo "Enable elogind..."
-
+		echo -n "$none"
 	sudo xbps-install -y elogind
 
 	if [ -L /var/service/elogind ]; then
 		echo -n "$green"
 		echo "Service elogind already exist. Continue."
+		echo -n "$none"
 	else
 		sudo ln -s /etc/sv/elogind /var/service
 		echo -n "$green"
 		echo "Done"
+		echo -n "$none"
 	fi
 		echo -n "$blue"
 		echo "Enable Polkit..."
-
+		echo -n "$none"
 	if [ -L /var/service/polkitd ]; then
 		echo -n "$green"
 		echo "Service polkitd already exist. Continue."
+		echo -n "$none"
 	else
 		sudo ln -s /etc/sv/polkitd /var/service
 		echo -n "$green"
 		echo "Done"
+		echo -n "$none"
 	fi
 
 	;;
@@ -1021,14 +1058,16 @@ sudo xbps-install -y cronie
 
 echo -n "$blue"
 echo "Enable cronie service..."
-
+echo -n "$none"
 if [ -L /var/service/cronie ]; then
 	echo -n "$green"
 	echo "Service cronie already exist. Continue."
+	echo -n "$none"
 else
 	sudo ln -sv /etc/sv/cronie /var/service
 	echo -n "$green"
 	echo "Done"
+	echo -n "$none"
 fi
 
 # Configure Audio
@@ -1038,13 +1077,13 @@ case $pulseaudio in
 	y )
 	echo -n "$blue"
 	echo "Install PulseAudio..."
-
+	echo -n "$none"
 	sudo xbps-install pulseaudio pulseaudio-utils pulsemixer alsa-plugins-pulseaudio \
 		pavucontrol
 
 		echo -n "$green"
 		echo "Done"
-
+		echo -n "$none"
 	;;
 
 	n )
@@ -1056,6 +1095,7 @@ esac
 
 echo -n "$blue"
 echo "Configure Network Management..."
+echo -n "$none"
 printf "\nPossible (type in number): \n
 - 1 Network Manager
 - 2 Connman
@@ -1066,7 +1106,7 @@ case $netmngt in
 	1 )
 	echo -n "$blue"
 	echo "Install Network Manager..."
-
+	echo -n "$none"
 	sudo xbps-install NetworkManager NetworkManager-openvpn NetworkManager-openconnect \
 			NetworkManager-vpnc NetworkManager-l2tp
 
@@ -1076,7 +1116,7 @@ case $netmngt in
 
 			echo -n "$blue"
 			echo "Service Install Network Manager applet..."
-
+			echo -n "$none"
 			sudo xbps-install network-manager-applet
 					
 			;;
@@ -1087,14 +1127,16 @@ case $netmngt in
 	esac
 	echo -n "$blue"
 	echo "Enable Network Manager service..."
-
+	echo -n "$none"
 	if [ -L /var/service/NetworkManager ]; then
 		echo -n "$green"
 		echo "Service NetworkManager already exist. Continue."
+		echo -n "$none"
 	else
 		sudo ln -sv /etc/sv/NetworkManager /var/service
-			echo -n "$green"
-	echo "Done"
+		echo -n "$green"
+		echo "Done"
+		echo -n "$none"
 	fi
 
 	;;
@@ -1103,19 +1145,21 @@ case $netmngt in
 	
 	echo -n "$blue"
 	echo "Install Connman..."
-
+	echo -n "$none"
 	sudo xbps-install connman connman-ncurses
 	
 	echo -n "$blue"
 	echo "Enable Connman service..."
-
+	echo -n "$none"
 	if [ -L /var/service/connmand ]; then
 		echo -n "$green"
 		echo "Service connmand already exist. Continue."
+		echo -n "$none"
 	else
 		sudo ln -sv /etc/sv/connmand /var/service
-			echo -n "$green"
-	echo "Done"
+		echo -n "$green"
+		echo "Done"
+		echo -n "$none"
 	fi
 
 	;;
@@ -1132,7 +1176,7 @@ case $bluetooth in
 	y )
 	echo -n "$blue"
 	echo "Install BlueZ..."
-
+	echo -n "$none"
 	sudo xbps-install bluez
 
 	printf "\n"
@@ -1142,8 +1186,8 @@ case $bluetooth in
 			y )
 
 			echo -n "$blue"
-                        echo "Install Blueman..."
-
+            echo "Install Blueman..."
+			echo -n "$none"
 			sudo xbps-install blueman
 
 			;;
@@ -1154,15 +1198,17 @@ case $bluetooth in
 	esac
 	echo -n "$blue"
 	echo "Enable Bluetooth service..."
-
+	echo -n "$none"
 	if [ -L /var/service/bluetoothd ]; then
 		
 		echo -n "$green"
 		echo "Service bluetoothd already exist. Continue."
+		echo -n "$none"
 	else
 		sudo ln -sv /etc/sv/bluetoothd /var/service
 		echo -n "$green"
 		echo "Done"
+		echo -n "$none"
 	fi
 
 	;;
@@ -1179,7 +1225,7 @@ case $printer in
 	y )
 	echo -n "$blue"
 	echo "Install CUPS and Tools..."
-
+	echo -n "$none"
 	sudo xbps-install cups cups-pk-helper cups-filters foomatic-db foomatic-db-engine
 
 	read -p "Do you want to install a graphical printer program? (y/N) " printergui
@@ -1188,7 +1234,7 @@ case $printer in
 
 			echo -n "$blue"
 			echo "Install system-config-printer..."
-
+			echo -n "$none"
 			sudo xbps-install system-config-printer
 
 			;;
@@ -1199,14 +1245,16 @@ case $printer in
 	esac
 	echo -n "$blue"
 	echo "Enable CUPS service..."
-
+	echo -n "$none"
 	if [ -L /var/service/cupsd ]; then
 		echo -n "$green"
 		echo "ervice cupsd already exist. Continue."
+		echo -n "$none"
 	else
 		sudo ln -sv /etc/sv/cupsd /var/service
 		echo -n "$green"
 		echo "Done"
+		echo -n "$none"
 	fi
 
 	;;
@@ -1223,18 +1271,23 @@ case $nb_power in
 	y )
 	echo -n "$blue"
 	echo "Install TLP and PowerTop..."
+	echo -n "$none"
 
 	sudo xbps-install tlp tlp-rdw powertop
+	
 	echo -n "$blue"
 	echo "Enable TLP service..."
-
+	echo -n "$none"
+	
 	if [ -L /var/service/tlp ]; then
 		echo -n "$green"
 		echo "Service tlp already exist. Continue."
+		echo -n "$none"
 	else
-		sudo ln -sv /etc/sv/tlp /var/service
+			sudo ln -sv /etc/sv/tlp /var/service
 		echo -n "$green"
 		echo "Done"
+		echo -n "$none"
 	fi
 
 	;;
@@ -1269,5 +1322,6 @@ case $dmenable in
 	;;
 esac
 
-echo -n "$blue"
+echo -n "$red"
 echo "Finished."
+echo -n "$none"
