@@ -2,6 +2,8 @@
 
 void-sh is a program written in Bash that configures Void Linux.
 
+Don't run as ROOT zou will be asked for password if needed!
+
 ### Content
 
 - Update the system
@@ -50,10 +52,7 @@ Then run: <br><br>
 `cd void-sh` <br>
 `sudo sh void.sh`
 
-This script should be executed as root because it must execute the package manager
-and copy some configuration files.
-
 ### Notes
 
 - This program is not part of Void Linux.
-- This program must be bit more tested for use on production systems.
+- This program must be more tested for use on production systems.
