@@ -28,37 +28,42 @@
 
 # Color definitions
 
-BLUE="\033[01;34m"
-GREEN="\033[01;32m"
-RED="\033[01;31m"
-NONE="\033[00m"
+blue=$(tput setaf 4)
+green=$(tput setaf 2)
+red=$(tput setaf 1)
+none=$(tput sgr0)
 
 # Update the System
 
-printf "\n${BLUE}Checking for updates...${NONE}/n"
+echo -n "$blue"
+echo "Checking for updates..."
 
 sudo xbps-install -Su
-printf "\n${GREEN}Done${NONE}/n"
+echo -n "$green"
+echo "Done"
 
 # Install recommended packages
 
-printf "${BLUE}Install recommended packages...${NONE}/n"
+echo -n "$blue"
+echo "Install recommended packages..."
 
 sudo xbps-install curl wget unzip zip nano vim gptfdisk mtools mlocate \
 	ntfs-3g fuse-exfat bash-completion linux-headers
 
-printf "\n${GREEN}Done${NONE}/n"
+echo -n "$green"
+echo "Done"
 
 # Install development packages
 
-read -p 'Do you want to install development tools? (y/N) ' devtools
+read -p "Do you want to install development tools? (y/N) " devtools
 case $devtools in
 	y )
 
 	sudo xbps-install autoconf automake bison m4 make libtool flex meson ninja \
 			optipng sassc
 
-	printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+	echo "Done"
 
 	;;
 
@@ -69,17 +74,19 @@ esac
 
 # Install shell
 
-printf "\n${BLUE}Install shell...${NONE}/n"
+echo -n "$blue"
+echo "Install shell..."
 printf "Possible (type in number): \n
 - 1 Fish
 - 2 Zsh
-- 0 None/n"
+- 0 None\n"
 
-read -p 'Which shell do you want?' shell
+read -p "Which shell do you want?" shell
 case $shell in
 	1 )
 	
-	printf "\n${BLUE}Install Fish...${NONE}/n"
+	echo -n "$blue"
+	echo "Install Fish..."
 	
 	sudo xbps-install fish-shell
 	sudo usermod --shell /bin/fish "$USER"
@@ -88,7 +95,8 @@ case $shell in
 	
 	2 )
 	
-	printf "\n${BLUE}Install Zsh...${NONE}/n"
+	echo -n "$blue"
+	echo "Install Zsh..."
 	
 	sudo xbps-install zsh zsh-autosuggestions zsh-completions zsh-history-substring-search zsh-syntax-highlighting
 	sudo usermod --shell /bin/zsh "$USER"
@@ -98,16 +106,16 @@ esac
 
 # Install the X Window System
 
-read -p 'Do you want to use a graphical environment? (y/N) ' xwinsys
+read -p "Do you want to use a graphical environment? (y/N) " xwinsys
 case $xwinsys in
 	y )
-
-	printf "\n${BLUE}Install the X Window System...${NONE}/n"
+	echo -n "$blue"
+	echo "Install the X Window System..."
 
 	sudo xbps-install xorg-server xorg-server-xwayland xorg-video-drivers xorg-input-drivers \
 		xinit xauth xrandr xrdb xwininfo xdpyinfo xsetroot neofetch
-
-	printf "\n${BLUE}Copy configurations...${NONE}/n"
+	echo -n "$blue"
+	echo "Copy configurations..."
 
 	if [ ! -d /etc/X11/xorg.conf.d ]; then
 		sudo mkdir -p /etc/X11/xorg.conf.d
@@ -116,11 +124,12 @@ case $xwinsys in
 	sudo cp -r 00-keyboard.conf /etc/X11/xorg.conf.d/
 	sudo cp -r 20-libinput.conf /etc/X11/xorg.conf.d/
 
-	printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+	echo "Done"
 
 	# Install a Desktop environment
-
-	printf "\n${BLUE}Install a Desktop environment...${NONE}/n"
+	echo -n "$blue"
+	echo "Install a Desktop environment..."
 	printf "Possible (type in number): \n
 	- 1 Xfce
 	- 2 MATE
@@ -132,13 +141,13 @@ case $xwinsys in
 	- 8 Enlightenment
 	- 9 LXDE
 	- 10 Lumina
-	- 0 none/n"
+	- 0 none\n"
 
-	read -p 'Which Desktop environment do you want? ' desktop
+	read -p "Which Desktop environment do you want? " desktop
 	case $desktop in
 		1 ) 
-
-		printf "\n${BLUE}Install Xfce...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Xfce..."
 
 		sudo xbps-install xfce4-appfinder xfce4-battery-plugin xfce4-clipman-plugin xfce4-cpufreq-plugin \
 			xfce4-cpugraph-plugin xfce4-dict xfce4-diskperf-plugin xfce4-fsguard-plugin \
@@ -151,13 +160,14 @@ case $xwinsys in
 			xarchiver mousepad xfwm4 xfdesktop zathura zathura-pdf-poppler gvfs gvfs-mtp gvfs-gphoto2 \
 			xfce-polkit parole
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 			
 		;;
 		
 		2 ) 
-
-		printf "\n${BLUE}Install MATE...${NONE}/n"
+		echo -n "$blue"
+		echo "Install MATE..."
 
 		sudo xbps-install mate-applets mate-backgrounds mate-calc mate-control-center mate-desktop \
 			mate-icon-theme mate-indicator-applet mate-media mate-menus mate-notification-daemon \
@@ -166,29 +176,34 @@ case $xwinsys in
 			mozo pluma caja caja-image-converter caja-sendto caja-open-terminal caja-wallpaper \
 			caja-xattr-tags eom atril gvfs gvfs-mtp gvfs-gphoto2 engrampa mate-power-manager mate-polkit
 		
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 			
 		;;
 		
 		3 )
-
-		printf "\n${BLUE}Install GNOME...${NONE}/n"
+		echo -n "$blue"
+		echo "Install GNOME..."
 
 		sudo xbps-install gnome-shell gnome-control-center gnome-tweaks gnome-system-monitor gnome-terminal gdm \
 			gnome-disk-utility nautilus nautilus-sendto gvfs gvfs-mtp gvfs-gphoto2 eog eog-plugins \
 			evince gedit gedit-plugins gnome-video-effects gnome-themes-extra gnome-session gnome-screenshot \
 			gnome-shell-extensions gnome-icon-theme gnome-icon-theme-extras gnome-icon-theme-symbolic \
 			gnome-backgrounds file-roller chrome-gnome-shell totem
-					
-		printf "\n${BLUE}GNOME Applications${NONE}/n"
-		printf "Includes: GNOME Calendar, GNOME Clocks, GNOME Weather, Evolution, GNOME Font Viewer,"
-		printf "GNOME Calculator, GNOME Characters, GNOME Contacts, GNOME Documents, GNOME Maps/n"
+		
+		echo -n "$blue"
+		echo "GNOME Applications"
+		echo -n "$blue"
+		echo "Includes: GNOME Calendar, GNOME Clocks, GNOME Weather, Evolution, GNOME Font Viewer,"
+		echo -n "$blue"
+		echo "GNOME Calculator, GNOME Characters, GNOME Contacts, GNOME Documents, GNOME Maps"
 
-		read -p 'Do you want to install GNOME applications? (y/N) ' gnomeapps
+		read -p "Do you want to install GNOME applications? (y/N) " gnomeapps
 		case $gnomeapps in
 			y )
 
-			printf "\n${BLUE}Install GNOME applications...${NONE}/n"
+			echo -n "$blue"
+			echo "Install GNOME applications..."
 
 			sudo xbps-install gnome-calendar gnome-clocks gnome-weather evolution gnome-font-viewer \
 				gnome-calculator gnome-characters gnome-contacts gnome-documents gnome-maps
@@ -200,27 +215,30 @@ case $xwinsys in
 			;;
 		esac
 		
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 		
 		4 )
-
-		printf "\n${BLUE}Install KDE Plasma...${NONE}/n"
+		echo -n "$blue"
+		echo "Install KDE Plasma..."
 
 		sudo xbps-install plasma-desktop plasma-disks plasma-thunderbolt plasma-systemmonitor plasma-pa plasma-nm \
 			plasma-firewall plasma-browser-integration plasma-vault latte-dock oxygen kdegraphics-thumbnailers \
 			dolphin dolphin-plugins kate5 konsole okular gwenview ark sddm sddm-kcm yakuake spectacle \
 			partitionmanager ffmpegthumbs kde-gtk-config5
+		echo -n "$blue"
+		echo "KDE Applications"
+		echo -n "$blue"
+		echo "Includes: KMail, Kontact, KOrganizer, KAddressbook, Akregator, Konversation, KCalc, KCharSelect"
 
-		printf "\n${BLUE}KDE Applications${NONE}/n"
-		printf "Includes: KMail, Kontact, KOrganizer, KAddressbook, Akregator, Konversation, KCalc, KCharSelect/n"
-
-		read -p 'Do you want to install KDE applications? (y/N) ' kdeapps
+		read -p "Do you want to install KDE applications? (y/N) " kdeapps
 		case $kdeapps in
 			y )
 
-			printf "\n${BLUE}Install KDE applications...${NONE}/n"
+			echo -n "$blue"
+			echo "Install KDE applications..."
 
 			sudo xbps-install kmail kontact korganizer kaddressbook akregator konversation kcalc kcharselect
 
@@ -231,11 +249,12 @@ case $xwinsys in
 			;;
 		esac
 
-		read -p 'Do you want to use KDE Connect? (y/N) ' kdeconnect
+		read -p "Do you want to use KDE Connect? (y/N) " kdeconnect
 		case $kdeconnect in
 			y )
 
-			printf "\n${BLUE}Install KDE Connect...${NONE}/n"
+			echo -n "$blue"
+			echo "Install KDE Connect..."
 
 			sudo xbps-install kdeconnect
 
@@ -246,75 +265,82 @@ case $xwinsys in
 			;;
 		esac
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
 		5 )
-
-		printf "\n${BLUE}Install Budgie...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Budgie..."
 
 		sudo xbps-install budgie-desktop gnome-control-center gnome-system-monitor gnome-terminal nautilus \
 			nautilus-sendto gnome-keyring evince gedit gedit-plugins eog eog-plugins gnome-screenshot \
 			gnome-disk-utility gvfs gvfs-mtp gvfs-gphoto2 file-roller
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
 		6 )
-
-		printf "\n${BLUE}Install Cinnamon...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Cinnamon..."
 
 		sudo xbps-install cinnamon gnome-system-monitor gnome-terminal gnome-screenshot gnome-disk-utility \
 			gnome-keyring gedit gedit-plugins evince gvfs gvfs-mtp gvfs-gphoto2 eog eog-plugins file-roller
 		
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
 		7 )
-
-		printf "\n${BLUE}Install LXQt...${NONE}/n"
+		echo -n "$blue"
+		echo "Install LXQt..."
 
 		sudo xbps-install lxqt-about lxqt-admin lxqt-archiver lxqt-build-tools lxqt-config lxqt-globalkeys lxqt-notificationd \
 			lxqt-openssh-askpass lxqt-panel lxqt-policykit lxqt-powermanagement lxqt-qtplugin lxqt-runner lxqt-session \
 			lxqt-sudo lxqt-themes obconf-qt openbox pcmanfm-qt lximage-qt FeatherPad qlipper qterminal
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
 		8 )
-
-		printf "\n${BLUE}Install Enlightenment...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Enlightenment..."
 
 		sudo xbps-install enlightenment terminology mousepad gvfs gvfs-mtp gvfs-gphoto2 zathura zathura-pdf-poppler \
 			Thunar thunar-volman thunar-archive-plugin thunar-media-tags-plugin xarchiver
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
 		9 )
-
-		printf "\n${BLUE}Install LXDE...${NONE}/n"
+		echo -n "$blue"
+		echo "Install LXDE..."
 
 		sudo xbps-install lxde-common lxde-icon-theme lxappearance lxinput lxpanel lxrandr lxsession lxtask \
 			lxterminal pcmanfm gvfs gvfs-mtp gvfs-gphoto2 viewnior mousepad zathura zathura-pdf-poppler \
 			openbox obconf lxappearance-obconf xarchiver
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
 		10 )
-
-		printf "\n${BLUE}Install Lumina...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Lumina..."
 
 		sudo xbps-install lumina lumina-pdf lumina-calculator gvfs gvfs-mtp gvfs-gphoto2 mousepad lxterminal viewnior
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 		
@@ -325,42 +351,46 @@ case $xwinsys in
 
 	# Install display manager
 	
-	printf "\n${BLUE}Install a display manageer...${NONE}/n"
+	echo -n "$blue"
+	echo "Install a display manageer..."
 	printf "Possible (type in number): \n
 	- 1 Lightdm
 	- 2 Emptty
 	- 3 Slim
-	- 0 none/n"
+	- 0 none\n"
 	
-	read -p 'Which display manager do you want? ' displaymanager
+	read -p "Which display manager do you want? " displaymanager
 	case $displaymanager in
 		1 )
-		
-		printf "\n${BLUE}Install Lightdm...${NONE}/n"		
+		echo -n "$blue"
+		echo "Install Lightdm..."		
 		
 		sudo xbps-install lightdm lightdm-gtk3-greeter lightdm-gtk-greeter-settings
 		
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 			
 		;;
 		
 		2 )
-
-		printf "\n${BLUE}Install Emptty...${NONE}/n"		
+		echo -n "$blue"
+		echo "Install Emptty..."		
 
 		sudo xbps-install emptty
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 					
 		;;
 
 		3 )
-
-		printf "\n${BLUE}Install Slim...${NONE}/n"		
+		echo -n "$blue"
+		echo "Install Slim..."		
 
 		sudo xbps-install slim
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 					
 		;;
 		
@@ -370,8 +400,8 @@ case $xwinsys in
 	esac
 
 	# Install a Window manager
-	
-	printf "\n${BLUE}Install a Window Manager...${NONE}/n"
+	echo -n "$blue"
+	echo "Install a Window Manager..."
 	printf "Possible (type in number): \n
 	--- Xorg ---
 	- 1 i3-gaps
@@ -387,143 +417,155 @@ case $xwinsys in
 	--- Wayland ---
 	- 11 Sway
 	- 12 Wayfire
-	- 0 none/n"
+	- 0 none\n"
 
-	read -p 'Which Window manager do you want? ' windowmanager
+	read -p "Which Window manager do you want? " windowmanager
 	case $windowmanager in
 		1 ) 
-
-		printf "\n${BLUE}Install i3-gaps...${NONE}/n"
+		echo -n "$blue"
+		echo "Install i3-gaps..."
 
 		sudo xbps-install i3-gaps i3lock i3status i3blocks dunst dmenu feh Thunar \
 			thunar-volman thunar-archive-plugin thunar-media-tags-plugin xarchiver \
 			lm_sensors acpi playerctl scrot htop xfce4-terminal arandr gvfs gvfs-mtp \
 			gvfs-gphoto2 mousepad xfce4-taskmanager viewnior
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 			
 		;;
 
 		2 )
-
-		printf "\n${BLUE}Install Openbox...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Openbox..."
 
 		sudo xbps-install openbox obconf lxappearance lxappearance-obconf jgmenu dunst \
 			feh lxterminal lxrandr lxinput pcmanfm gvfs gvfs-mtp gvfs-gphoto2 \
 			mousepad lxtask scrot htop xarchiver viewnior
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 		
 		3 )
-
-		printf "\n${BLUE}Install Fluxbox...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Fluxbox..."
 
 		sudo xbps-install fluxbox dunst feh xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad xfce4-terminal scrot htop xarchiver \
 		        viewnior
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
 		4 )
-
-		printf "\n${BLUE}Install Bspwm...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Bspwm..."
 
 		sudo xbps-install bspwm sxhkd dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
 		5 )
-
-		printf "\n${BLUE}Install herbstluftwm...${NONE}/n"
+		echo -n "$blue"
+		echo "Install herbstluftwm..."
 
 		sudo xbps-install herbstluftwm dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
 		6 )
-
-		printf "\n${BLUE}Install IceWM...${NONE}/n"
+		echo -n "$blue"
+		echo "Install IceWM..."
 
 		sudo xbps-install icewm dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
 		7 )
-
-		printf "\n${BLUE}Install awesome...${NONE}/n"
+		echo -n "$blue"
+		echo "Install awesome..."
 
 		sudo xbps-install awesome vicious dunst feh arandr xfce4-terminal Thunar thunar-volman \
 				thunar-archive-plugin thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot \
 				htop xarchiver viewnior
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
 		8 )
-
-		printf "\n${BLUE}Install jwm...${NONE}/n"
+		echo -n "$blue"
+		echo "Install jwm..."
 
 		sudo xbps-install jwm dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
 		9 )
-
-		printf "\n${BLUE}Install dwm...${NONE}/n"
+		echo -n "$blue"
+		echo "Install dwm..."
 
 		sudo xbps-install dwm dunst feh dmenu xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
 		10 )
-
-		printf "\n${BLUE}Install FVWM3...${NONE}/n"
+		echo -n "$blue"
+		echo "Install FVWM3..."
 
 		sudo xbps-install fvwm3 feh xfce4-terminal arandr Thunar thunar-volman thunar-archive-plugin \
 			thunar-media-tags-plugin gvfs gvfs-mtp gvfs-gphoto2 mousepad scrot htop xarchiver viewnior
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 		
 		11 )
-
-		printf "\n${BLUE}Install Sway...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Sway..."
 
 		sudo xbps-install sway swaybg swayidle swaylock azote grimshot Waybar gvfs gvfs-mtp gvfs-gphoto2 \
 				htop wofi
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
 		12 )
-
-		printf "\n${BLUE}Install Wayfire...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Wayfire..."
 
 		sudo xbps-install wayfire grim gvfs gvfs-mtp gvfs-gphoto2 htop wofi
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
@@ -534,16 +576,17 @@ case $xwinsys in
 
 	# Install fonts
 
-	read -p 'Do you want to install some fonts? (y/N) ' fonts
+	read -p "Do you want to install some fonts? (y/N) " fonts
 	case $fonts in
 		y ) 
-
-		printf "\n${BLUE}Install fonts...${NONE}/n"
+		echo -n "$blue"
+		echo "Install fonts..."
 
 		sudo xbps-install liberation-fonts-ttf dejavu-fonts-ttf \
 			ttf-ubuntu-font-family fonts-roboto-ttf
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 			
 		;;
 		
@@ -553,8 +596,8 @@ case $xwinsys in
 	esac
 
 	# Install an Internet browser
-
-	printf "\n${BLUE}Install an Internet browser...${NONE}/n"
+	echo -n "$blue"
+	echo "Install an Internet browser..."
 	printf "Possible (type in number): \n
 	- 1 Firefox
 	- 2 Firefox-ESR
@@ -562,57 +605,62 @@ case $xwinsys in
 	- 4 qutebrowser
 	- 5 Falkon
 	- 6 Badwolf
-	- 0 None/n"
+	- 0 None\n"
 
-	read -p 'Which browser do you want? ' browser
+	read -p "Which browser do you want? " browser
 	case $browser in
 		1 )
-
-		printf "\n${BLUE}Install Firefox...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Firefox..."
 
 		sudo xbps-install firefox firefox-i18n-en-US firefox-i18n-de
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 			
 		;;
 
 		2 ) 
-
-		printf "\n${BLUE}Install Firefox Extended Support Release...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Firefox Extended Support Release..."
 
 		sudo xbps-install firefox-esr firefox-esr-i18n-en-US firefox-esr-i18n-de
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 			
 		;;
 
 		3 ) 
-
-		printf "\n${BLUE}Install Chromium...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Chromium..."
 
 		sudo xbps-install chromium
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 			
 		;;
 
 		4 )
-
-		printf "\n${BLUE}Install qutebrowser...${NONE}/n"
+		echo -n "$blue"
+		echo "Install qutebrowser..."
 
 		sudo xbps-install qutebrowser
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
 		5 )
-
-		printf "\n${BLUE}Install Falkon...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Falkon..."
 
 		sudo xbps-install falkon
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 		
@@ -621,12 +669,13 @@ case $xwinsys in
 		;;
 		
 		6 )
-		
-		printf "\n${BLUE}Install Badwolf...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Badwolf..."
 
 		sudo xbps-install badwolf
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 		
@@ -634,17 +683,18 @@ case $xwinsys in
 
 	# Install LibreOffice
 
-	read -p 'Do you want to install LibreOffice? (y/N) ' libreoffice
+	read -p "Do you want to install LibreOffice? (y/N) " libreoffice
 	case $libreoffice in
 		y )
-
-		printf "\n${BLUE}Install LibreOffice...${NONE}/n"
+		echo -n "$blue"
+		echo "Install LibreOffice..."
 
 		sudo xbps-install libreoffice-writer libreoffice-calc libreoffice-impress \
 			libreoffice-draw libreoffice-math libreoffice-base libreoffice-gnome \
 			libreoffice-i18n-en-US libreoffice-i18n-de
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
@@ -655,15 +705,16 @@ case $xwinsys in
 
 	# Install GIMP + Inkscape
 
-	read -p 'Do you want to install GIMP and Inkscape? (y/N) ' gimpinkscape
+	read -p "Do you want to install GIMP and Inkscape? (y/N) " gimpinkscape
 	case $gimpinkscape in
 		y )
-
-		printf "\n${BLUE}Install GIMP and Inkscape...${NONE}/n"
+		echo -n "$blue"
+		echo "Install GIMP and Inkscape..."
 
 		sudo xbps-install inkscape gimp
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
@@ -674,21 +725,23 @@ case $xwinsys in
 
 	# Install QEMU + Virt Manager
 
-	read -p 'Do you want to install QEMU and Virt Manager? (y/N) ' qemuvirt
+	read -p "Do you want to install QEMU and Virt Manager? (y/N) " qemuvirt
 	case $qemuvirt in
 		y )
-
-		printf "\n${BLUE}Install QEMU and Virt Manager...${NONE}/n"
+		echo -n "$blue"
+		echo "Install QEMU and Virt Manager..."
 
 		sudo xbps-install qemu virt-manager libvirt
-
-		printf "\n${BLUE}Enable libvirtd service...${NONE}/n"
+		echo -n "$blue"
+		echo "Enable libvirtd service..."
 
 		if [ -L /var/service/libvirtd ]; then
-			printf "\nService ${GREEN}libvirtd ${NONE}already exist. Continue./n"
+			echo -n "$green"
+			echo "Service libvirtd already exist. Continue."
 		else
 			sudo ln -sv /etc/sv/libvirtd /var/service
-			printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 		fi
 
 		;;
@@ -699,8 +752,8 @@ case $xwinsys in
 	esac
 
 	# Install a Terminal emulator
-
-	printf "\n${BLUE}Install a Terminal emulator...${NONE}/n"
+	echo -n "$blue"
+	echo "Install a Terminal emulator..."
 	printf "Possible (type in number): \n
 	- 1 Alacritty
 	- 2 xterm
@@ -708,121 +761,133 @@ case $xwinsys in
 	- 4 Yakuake
 	- 5 Sakura
 	- 6 Kitty
-	- 0 I take the given one/n"
+	- 0 I take the given one\n"
 
-	read -p 'What terminal emulator do you want? ' terminal
+	read -p "What terminal emulator do you want? " terminal
 	case $terminal in
 		1 ) 
-
-		printf "\n${BLUE}Install Alacritty...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Alacritty..."
 
 		sudo xbps-install alacritty alacritty-terminfo
-		export TERMINAL='alacritty'
-		printf TERM='alacritty' > ~/.bashrc
+		export TERMINAL="alacritty"
+		printf TERM="alacritty" > ~/.bashrc
 	
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 			
 		;;
 		
 		2 ) 
-
-		printf "\n${BLUE}Install xterm...${NONE}/n"
+		echo -n "$blue"
+		echo "Install xterm..."
 
 		sudo xbps-install xterm
-		export TERMINAL='xterm'
-		printf TERM='xterm' > ~/.bashrc
+		export TERMINAL="xterm"
+		printf TERM="xterm" > ~/.bashrc
 
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 			
 		;;
 		
 		3 ) 
-		
-		printf "\n${BLUE}Install LXTerminal...${NONE}/n"
+		echo -n "$blue"
+		echo "Install LXTerminal..."
 
 		sudo xbps-install lxterminal
-		export TERMINAL='lxterminal'
-		printf TERM='lxterminal' > ~/.bashrc
+		export TERMINAL="lxterminal"
+		printf TERM="lxterminal" > ~/.bashrc
 		
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 			
 		;;
 
 		4 )
-		
-		printf "\n${BLUE}Install Yakuake...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Yakuake..."
 
 		sudo xbps-install yakuake
-		export TERMINAL='yakuake'
-		printf TERM='yakuake' > ~/.bashrc
+		export TERMINAL="yakuake"
+		printf TERM="yakuake" > ~/.bashrc
 		
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
 		5 )
-		
-		printf "\n${BLUE}Install Sakura...${NONE}/n"
+		echo -n "$blue"
+		echo "Install Sakura..."
 
 		sudo xbps-install sakura
-		export TERMINAL='sakura'
-		printf TERM='sakura' > ~/.bashrc
+		export TERMINAL="sakura"
+		printf TERM="sakura" > ~/.bashrc
 		
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 
 		0 )
-		
-		printf "\n${BLUE}Install Kitty...${NONE}/n"
+				echo -n "$blue"
+		echo "Install Kitty..."
 
 		sudo xbps-install kitty kitty-terminfo
-		export TERMINAL='kitty'
-		printf TERM='kitty' > ~/.bashrc
+		export TERMINAL="kitty"
+		printf TERM="kitty" > ~/.bashrc
 		
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 		;;
 	esac
 
 	# Install a Backup program
-
-	printf "\n${BLUE}Install a Backup program...${NONE}/n"
+	echo -n "$blue"
+	echo "Install a Backup program..."
 	printf "Possible (type in number): \n
 	- 1 Borg
 	- 2 Timeshift
 	- 3 Deja-dup
-	- 0 none/n"
+	- 0 none\n"
 
-	read -p 'Which Backup program do you want? ' backup
+	read -p "Which Backup program do you want? " backup
 	case $backup in
 			1 )
 
-			printf "\n${BLUE}Install Borg...${NONE}/n"
+			echo -n "$blue"
+                        echo "Install Borg..."
 
 			sudo xbps-install borg
 
-			printf "\n${GREEN}Done${NONE}/n"
+			echo -n "$green"
+			echo "Done"
 
 			;;
 
 			2 )
 			
-			printf "\n${BLUE}Install Timeshift...${NONE}/n"
+			echo -n "$blue"
+                        echo "Install Timeshift..."
 
 			sudo xbps-install timeshift
 
-			printf "\n${GREEN}Done${NONE}/n"
+			echo -n "$green"
+			echo "Done"
 
 			;;
 
 			3 )
 			
-			printf "\n${BLUE}Install Deja-dup...${NONE}/n"
+			echo -n "$blue"
+                        echo "Install Deja-dup..."
 
 			sudo xbps-install deja-dup
 
-			printf "\n${GREEN}Done${NONE}/n"
+			echo -n "$green"
+			echo "Done"
 
 			;;
 
@@ -832,54 +897,62 @@ case $xwinsys in
 	esac
 
 	# Install a Video player
-
-	printf "\n${BLUE}Install a Video player...${NONE}/n"
+	echo -n "$blue"
+	echo "Install a Video player..."
 	printf "Possible (type in number): \n
 	- 1 mpv
 	- 2 VLC Media Player
 	- 3 Parole (part of Xfce)
 	- 4 Totem (part of GNOME)
-	- 0 none/n"
+	- 0 none\n"
 
-	read -p 'Which Video player do you want? ' videoplayer
+	read -p "Which Video player do you want? " videoplayer
 	case $videoplayer in
 			1 )
 			
-			printf "\n${BLUE}Install mpv...${NONE}/n"
+			echo -n "$blue"
+                        echo "Install mpv..."
 
 			sudo xbps-install mpv
 
-			printf "\n${GREEN}Done${NONE}/n"
+			echo -n "$green"
+			echo "Done"
 
 			;;
 
 			2 )
 			
-			printf "\n${BLUE}Install VLC Media Player...${NONE}/n"
+			echo -n "$blue"
+                        echo "Install VLC Media Player..."
 
 			sudo xbps-install vlc
 
-			printf "\n${GREEN}Done${NONE}/n"
+			echo -n "$green"
+			echo "Done"
 
 			;;
 
 			3 )
 			
-			printf "\n${BLUE}Install Parole...${NONE}/n"
+			echo -n "$blue"
+                        echo "Install Parole..."
 
 			sudo xbps-install parole
 
-			printf "\n${GREEN}Done${NONE}/n"
+			echo -n "$green"
+			echo "Done"
 
 			;;
 
 			4 )
 			
-			printf "\n${BLUE}Install Totem...${NONE}/n"
+			echo -n "$blue"
+                        echo "Install Totem..."
 
 			sudo xbps-install totem
 
-			printf "\n${GREEN}Done${NONE}/n"
+			echo -n "$green"
+			echo "Done"
 
 			;;
 
@@ -890,37 +963,44 @@ case $xwinsys in
 
 	# Enable required services
 
-	printf "\n${BLUE}Enable required services...${NONE}/n"
-
-	printf "\n${BLUE}Enable D-Bus...${NONE}/n"
+	echo -n "$blue"
+	echo "Enable required services..."
+	echo -n "$blue"
+	echo "Enable D-Bus..."
 
 	sudo xbps-install -y dbus
 
 	if [ -L /var/service/dbus ]; then
-		printf "\nService ${GREEN}dbus ${NONE}already exist. Continue./n"
+		echo -n "$green"
+		echo "Service dbus already exist. Continue."
 	else
 		sudo ln -s /etc/sv/dbus /var/service
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 	fi
-
-	printf "\n${BLUE}Enable elogind...${NONE}/n"
+		echo -n "$blue"
+		echo "Enable elogind..."
 
 	sudo xbps-install -y elogind
 
 	if [ -L /var/service/elogind ]; then
-		printf "\nService ${GREEN}elogind ${NONE}already exist. Continue./n"
+		echo -n "$green"
+		echo "Service elogind already exist. Continue."
 	else
 		sudo ln -s /etc/sv/elogind /var/service
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 	fi
-
-	printf "\n${BLUE}Enable Polkit...${NONE}/n"
+		echo -n "$blue"
+		echo "Enable Polkit..."
 
 	if [ -L /var/service/polkitd ]; then
-		printf "\nService ${GREEN}polkitd ${NONE}already exist. Continue./n"
+		echo -n "$green"
+		echo "Service polkitd already exist. Continue."
 	else
 		sudo ln -s /etc/sv/polkitd /var/service
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 	fi
 
 	;;
@@ -932,32 +1012,38 @@ esac
 
 # Configure Cron
 
-printf "\n${BLUE}Configure Cron...${NONE}/n"
-printf "\nInstall cronie.../n"
+echo -n "$blue"
+echo "Configure Cron..."
+echo -n "$green"
+echo "Install cronie..."
 
 sudo xbps-install -y cronie
 
-printf "\n${BLUE}Enable cronie service...${NONE}/n"
+echo -n "$blue"
+echo "Enable cronie service..."
 
 if [ -L /var/service/cronie ]; then
-	printf "\nService ${GREEN}cronie ${NONE}already exist. Continue./n"
+	echo -n "$green"
+	echo "Service cronie already exist. Continue."
 else
 	sudo ln -sv /etc/sv/cronie /var/service
-	printf "\n${GREEN}Done${NONE}/n"
+	echo -n "$green"
+	echo "Done"
 fi
 
 # Configure Audio
 
-read -p 'Do you want to install PulseAudio for audio? (y/N) ' pulseaudio
+read -p "Do you want to install PulseAudio for audio? (y/N) " pulseaudio
 case $pulseaudio in
 	y )
-
-	printf "\n${BLUE}Install PulseAudio...${NONE}/n"
+	echo -n "$blue"
+	echo "Install PulseAudio..."
 
 	sudo xbps-install pulseaudio pulseaudio-utils pulsemixer alsa-plugins-pulseaudio \
 		pavucontrol
 
-	printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 
 	;;
 
@@ -968,28 +1054,28 @@ esac
 
 # Configure Network Management
 
-printf "\n${BLUE}Configure Network Management...${NONE}/n"
+echo -n "$blue"
+echo "Configure Network Management..."
 printf "\nPossible (type in number): \n
 - 1 Network Manager
 - 2 Connman
-- 0 None/n"
+- 0 None\n"
 
-read -p 'Which Network Management tool do you want to use? ' netmngt
+read -p "Which Network Management tool do you want to use? " netmngt
 case $netmngt in
 	1 )
-
-	printf "\n${BLUE}Install Network Manager...${NONE}/n"
+	echo -n "$blue"
+	echo "Install Network Manager..."
 
 	sudo xbps-install NetworkManager NetworkManager-openvpn NetworkManager-openconnect \
 			NetworkManager-vpnc NetworkManager-l2tp
-	
-	printf "/n"
 
-	read -p 'Do you want to integrate Network Manager into a graphical environment? (y/N) ' nmapplet
+	read -p "Do you want to integrate Network Manager into a graphical environment? (y/N) " nmapplet
 	case $nmapplet in
 			y ) 
 
-			printf "\n${BLUE}Install Network Manager applet...${NONE}/n"
+			echo -n "$blue"
+			echo "Service Install Network Manager applet..."
 
 			sudo xbps-install network-manager-applet
 					
@@ -999,31 +1085,37 @@ case $netmngt in
 
 			;;
 	esac
-
-	printf "\n${BLUE}Enable Network Manager service...${NONE}/n"
+	echo -n "$blue"
+	echo "Enable Network Manager service..."
 
 	if [ -L /var/service/NetworkManager ]; then
-		printf "\nService ${GREEN}NetworkManager ${NONE}already exist. Continue./n"
+		echo -n "$green"
+		echo "Service NetworkManager already exist. Continue."
 	else
 		sudo ln -sv /etc/sv/NetworkManager /var/service
-		printf "\n${GREEN}Done${NONE}/n"
+			echo -n "$green"
+	echo "Done"
 	fi
 
 	;;
 
 	2 )
-
-	printf "\n${BLUE}Install Connman...${NONE}/n"
+	
+	echo -n "$blue"
+	echo "Install Connman..."
 
 	sudo xbps-install connman connman-ncurses
-
-	printf "\n${BLUE}Enable Connman service...${NONE}/n"
+	
+	echo -n "$blue"
+	echo "Enable Connman service..."
 
 	if [ -L /var/service/connmand ]; then
-		printf "\nService ${GREEN}connmand ${NONE}already exist. Continue./n"
+		echo -n "$green"
+		echo "Service connmand already exist. Continue."
 	else
 		sudo ln -sv /etc/sv/connmand /var/service
-		printf "\n${GREEN}Done${NONE}/n"
+			echo -n "$green"
+	echo "Done"
 	fi
 
 	;;
@@ -1035,21 +1127,22 @@ esac
 
 # Configure Bluetooth
 
-read -p 'Do you want to use Bluetooth? (y/N) ' bluetooth
+read -p "Do you want to use Bluetooth? (y/N) " bluetooth
 case $bluetooth in
 	y )
-
-	printf "\n${BLUE}Install BlueZ...${NONE}/n"
+	echo -n "$blue"
+	echo "Install BlueZ..."
 
 	sudo xbps-install bluez
 
-	printf "/n"
+	printf "\n"
 
-	read -p 'Do you want to integrate Bluetooth into a graphical environment? (y/N) ' blueman
+	read -p "Do you want to integrate Bluetooth into a graphical environment? (y/N) " blueman
 	case $blueman in
 			y )
 
-			printf "\n${BLUE}Install Blueman...${NONE}/n"
+			echo -n "$blue"
+                        echo "Install Blueman..."
 
 			sudo xbps-install blueman
 
@@ -1059,14 +1152,17 @@ case $bluetooth in
 
 			;;
 	esac
-
-	printf "\n${BLUE}Enable Bluetooth service...${NONE}/n"
+	echo -n "$blue"
+	echo "Enable Bluetooth service..."
 
 	if [ -L /var/service/bluetoothd ]; then
-		printf "\nService ${GREEN}bluetoothd ${NONE}already exist. Continue./n"
+		
+		echo -n "$green"
+		echo "Service bluetoothd already exist. Continue."
 	else
 		sudo ln -sv /etc/sv/bluetoothd /var/service
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 	fi
 
 	;;
@@ -1078,21 +1174,20 @@ esac
 
 # Configure Printing support
 
-read -p 'Do you want to use printers? (y/N) ' printer
+read -p "Do you want to use printers? (y/N) " printer
 case $printer in
 	y )
-
-	printf "\n${BLUE}Install CUPS and Tools...${NONE}/n"
+	echo -n "$blue"
+	echo "Install CUPS and Tools..."
 
 	sudo xbps-install cups cups-pk-helper cups-filters foomatic-db foomatic-db-engine
 
-	printf "/n"
-
-	read -p 'Do you want to install a graphical printer program? (y/N) ' printergui
+	read -p "Do you want to install a graphical printer program? (y/N) " printergui
 	case $printergui in
 			y )
 
-			printf "\n${BLUE}Install system-config-printer...${NONE}/n"
+			echo -n "$blue"
+			echo "Install system-config-printer..."
 
 			sudo xbps-install system-config-printer
 
@@ -1102,14 +1197,16 @@ case $printer in
 
 			;;
 	esac
-
-	printf "\n${BLUE}Enable CUPS service...${NONE}/n"
+	echo -n "$blue"
+	echo "Enable CUPS service..."
 
 	if [ -L /var/service/cupsd ]; then
-		printf "\nService ${GREEN}cupsd ${NONE}already exist. Continue./n"
+		echo -n "$green"
+		echo "ervice cupsd already exist. Continue."
 	else
 		sudo ln -sv /etc/sv/cupsd /var/service
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 	fi
 
 	;;
@@ -1121,21 +1218,23 @@ esac
 
 # Configure Notebook Power Saving
 
-read -p 'Do you want to install TLP for power saving (Notebooks only)? (y/N) ' nb_power
+read -p "Do you want to install TLP for power saving (Notebooks only)? (y/N) " nb_power
 case $nb_power in
 	y )
-
-	printf "\n${BLUE}Install TLP and PowerTop...${NONE}/n"
+	echo -n "$blue"
+	echo "Install TLP and PowerTop..."
 
 	sudo xbps-install tlp tlp-rdw powertop
-
-	printf "\n${BLUE}Enable TLP service...${NONE}/n"
+	echo -n "$blue"
+	echo "Enable TLP service..."
 
 	if [ -L /var/service/tlp ]; then
-		printf "\nService ${GREEN}tlp ${NONE}already exist. Continue./n"
+		echo -n "$green"
+		echo "Service tlp already exist. Continue."
 	else
 		sudo ln -sv /etc/sv/tlp /var/service
-		printf "\n${GREEN}Done${NONE}/n"
+		echo -n "$green"
+		echo "Done"
 	fi
 
 	;;
@@ -1147,7 +1246,7 @@ esac
 
 # Configure the Display manager
 
-read -p 'sudo if a display manager exist. If yes, enable it? (y/N) ' dmenable
+read -p "Check if a display manager exist. If yes, enable it? (y/N) " dmenable
 case $dmenable in
 	y )
 
@@ -1170,4 +1269,5 @@ case $dmenable in
 	;;
 esac
 
-printf "\n${BLUE}Finished.${NONE}/n"
+echo -n "$blue"
+echo "Finished."
