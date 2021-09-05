@@ -2,7 +2,7 @@
 
 void-sh is a program written in Bash that configures Void Linux.
 
-Don't run as ROOT zou will be asked for password if needed!
+Don't run as ROOT you will be asked for password if needed!
 
 ### Content
 
